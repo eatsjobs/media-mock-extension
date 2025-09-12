@@ -2,7 +2,7 @@
 "media-mock-extension": major
 ---
 
-Initial release of MediaMock Extension
+Initial release of @eatsjobs/media-mock-browser-extension
 
 ## Features
 

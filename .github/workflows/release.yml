@@ -70,13 +70,13 @@ jobs:
           # Chrome
           if [ -d "chrome-mv3" ]; then
             cd chrome-mv3
-            zip -r "../../media-mock-extension-chrome-v${VERSION}.zip" .
+            zip -r "../../@eatsjobs-media-mock-browser-extension-chrome-v${VERSION}.zip" .
             cd ..
           fi
           # Firefox
           if [ -d "firefox-mv2" ]; then
             cd firefox-mv2
-            zip -r "../../media-mock-extension-firefox-v${VERSION}.zip" .
+            zip -r "../../@eatsjobs-media-mock-browser-extension-firefox-v${VERSION}.zip" .
             cd ..
           fi
           cd ..
@@ -87,8 +87,8 @@ jobs:
         with:
           name: linux-builds
           path: |
-            media-mock-extension-chrome-v${{ steps.package-version.outputs.version }}.zip
-            media-mock-extension-firefox-v${{ steps.package-version.outputs.version }}.zip
+            @eatsjobs-media-mock-browser-extension-chrome-v${{ steps.package-version.outputs.version }}.zip
+            @eatsjobs-media-mock-browser-extension-firefox-v${{ steps.package-version.outputs.version }}.zip
           
       - name: Commit updated VersionInfo
         if: steps.changesets.outputs.published == 'true'
@@ -104,6 +104,7 @@ jobs:
     runs-on: macos-latest
     needs: release
     if: needs.release.outputs.published == 'true'
+    continue-on-error: true
     
     steps:
       - name: Checkout code
@@ -120,21 +121,49 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
+      - name: Debug environment
+        run: |
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
+          echo "WXT version: $(npm list wxt --depth=0 || echo 'WXT not found')"
+          
       - name: Build Safari extension
-        run: npm run build:safari
+        run: |
+          echo "Starting Safari build..."
+          npm run build:safari
+          echo "Safari build completed"
+          
+      - name: Verify Safari build
+        run: |
+          if [ ! -d ".output/safari" ]; then
+            echo "❌ Safari build directory not found"
+            echo "Contents of .output:"
+            ls -la .output/ || echo "No .output directory"
+            exit 1
+          fi
+          
+          echo "✅ Safari build directory found"
+          echo "Safari build contents:"
+          ls -la .output/safari/
         
       - name: Create Safari archive
         run: |
           VERSION="${{ needs.release.outputs.version }}"
-          cd .output/safari
-          zip -r "../../media-mock-extension-safari-v${VERSION}.zip" .
-          cd ../..
+          if [ -d ".output/safari" ]; then
+            cd .output/safari
+            zip -r "../../@eatsjobs-media-mock-browser-extension-safari-v${VERSION}.zip" .
+            cd ../..
+            echo "✅ Safari archive created"
+          else
+            echo "❌ Cannot create archive - Safari build directory missing"
+            exit 1
+          fi
           
       - name: Upload Safari artifact
         uses: actions/upload-artifact@v4
         with:
           name: safari-build
-          path: media-mock-extension-safari-v${{ needs.release.outputs.version }}.zip
+          path: "@eatsjobs-media-mock-browser-extension-safari-v${{ needs.release.outputs.version }}.zip"
 
   create-github-release:
     name: Create GitHub Release
@@ -152,8 +181,14 @@ jobs:
           
       - name: Download Safari artifact
         uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           name: safari-build
+          
+      - name: List available files
+        run: |
+          echo "Available files for release:"
+          ls -la *.zip || echo "No zip files found"
           
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -166,7 +201,7 @@ jobs:
             ### Browser Support
             - ✅ Chrome/Chromium (Manifest V3)
             - ✅ Firefox (Manifest V2)
-            - ✅ Safari (WebExtensions)
+            - ✅ Safari (WebExtensions) - *Build may be unavailable if macOS runner failed*
             
             ### Installation
             1. Download the appropriate zip file for your browser
@@ -184,9 +219,7 @@ jobs:
             ### Changes
             See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for detailed changes.
           files: |
-            media-mock-extension-chrome-v${{ needs.release.outputs.version }}.zip
-            media-mock-extension-firefox-v${{ needs.release.outputs.version }}.zip
-            media-mock-extension-safari-v${{ needs.release.outputs.version }}.zip
+            *.zip
           draft: false
           prerelease: false
         env:

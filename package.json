@@ -1,6 +1,6 @@
 {
-  "name": "media-mock-extension",
-  "description": "Chrome/Safari extension for MediaMock library",
+  "name": "@eatsjobs/media-mock-browser-extension",
+  "description": "Chrome/Firefox/Safari extension for MediaMock library",
   "private": true,
   "version": "1.0.0",
   "type": "module",

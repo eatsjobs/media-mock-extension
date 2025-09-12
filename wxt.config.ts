@@ -2,7 +2,6 @@ import { defineConfig } from 'wxt';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-  extensionApi: 'chrome',
   manifest: {
     name: 'MediaMock',
     description: 'Mock media devices for testing web applications',
@@ -14,5 +13,9 @@ export default defineConfig({
         matches: ['<all_urls>']
       }
     ]
+  },
+  // Ensure builds work across different environments
+  runner: {
+    disabled: true
   }
 });
