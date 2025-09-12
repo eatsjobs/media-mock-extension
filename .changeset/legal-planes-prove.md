@@ -1,5 +1,5 @@
 ---
-"media-mock-extension": major
+"@eatsjobs/media-mock-browser-extension": major
 ---
 
 Initial release of @eatsjobs/media-mock-browser-extension
