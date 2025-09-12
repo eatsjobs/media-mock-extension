@@ -1,9 +1,17 @@
 name: Release Extension
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
 
 jobs:
   release:
@@ -11,10 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
     outputs:
       published: ${{ steps.changesets.outputs.published }}
-      version: ${{ steps.package-version.outputs.version }}
+      version: ${{ steps.changesets.outputs.version }}
       
     steps:
       - name: Checkout code
@@ -31,41 +38,55 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Create Release Pull Request or Publish
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          version: npm run changeset:version
-          publish: npm run changeset:publish
-          title: "Release: Version Packages"
-          commit: "chore: release packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           
-      - name: Build Chrome and Firefox extensions (if published)
+      - name: Process changesets and version
+        id: changesets
+        run: |
+          # Check if there are changesets
+          if [ -n "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+            echo "Processing changesets..."
+            npm run changeset:version
+            
+            # Get the new version
+            NEW_VERSION=$(node -p "require('./package.json').version")
+            echo "New version: $NEW_VERSION"
+            echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+            echo "published=true" >> $GITHUB_OUTPUT
+            
+            # Update VersionInfo component
+            sed -i "s/const EXTENSION_VERSION = '[0-9.]*'/const EXTENSION_VERSION = '$NEW_VERSION'/" entrypoints/popup/components/VersionInfo.tsx
+            
+            # Commit the version changes
+            git add .
+            git commit -m "chore: release version $NEW_VERSION" || echo "Nothing to commit"
+            
+            # Create and push tag
+            git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
+            git push origin main
+            git push origin "v$NEW_VERSION"
+          else
+            echo "No changesets found to process"
+            echo "published=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Run type check
+        if: steps.changesets.outputs.published == 'true'
+        run: npm run type-check
+        
+      - name: Build Chrome and Firefox extensions
         if: steps.changesets.outputs.published == 'true'
         run: |
-          npm run type-check
           npm run build
           npm run build:firefox
-          
-      - name: Get package version
-        if: steps.changesets.outputs.published == 'true'
-        id: package-version
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          
-      - name: Update VersionInfo component
-        if: steps.changesets.outputs.published == 'true'
-        run: |
-          VERSION="${{ steps.package-version.outputs.version }}"
-          sed -i "s/const EXTENSION_VERSION = '[0-9.]*'/const EXTENSION_VERSION = '$VERSION'/" entrypoints/popup/components/VersionInfo.tsx
           
       - name: Create Chrome and Firefox archives
         if: steps.changesets.outputs.published == 'true'
         run: |
-          VERSION="${{ steps.package-version.outputs.version }}"
+          VERSION="${{ steps.changesets.outputs.version }}"
           cd .output
           # Chrome
           if [ -d "chrome-mv3" ]; then
@@ -87,17 +108,8 @@ jobs:
         with:
           name: linux-builds
           path: |
-            @eatsjobs-media-mock-browser-extension-chrome-v${{ steps.package-version.outputs.version }}.zip
-            @eatsjobs-media-mock-browser-extension-firefox-v${{ steps.package-version.outputs.version }}.zip
-          
-      - name: Commit updated VersionInfo
-        if: steps.changesets.outputs.published == 'true'
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add entrypoints/popup/components/VersionInfo.tsx
-          git diff --staged --quiet || git commit -m "chore: update extension version to ${{ steps.package-version.outputs.version }}"
-          git push
+            @eatsjobs-media-mock-browser-extension-chrome-v${{ steps.changesets.outputs.version }}.zip
+            @eatsjobs-media-mock-browser-extension-firefox-v${{ steps.changesets.outputs.version }}.zip
 
   build-safari:
     name: Build Safari Extension
@@ -110,7 +122,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: v${{ needs.release.outputs.version }}
           
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -121,12 +133,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Debug environment
-        run: |
-          echo "Node version: $(node --version)"
-          echo "NPM version: $(npm --version)"
-          echo "WXT version: $(npm list wxt --depth=0 || echo 'WXT not found')"
-          
       - name: Build Safari extension
         run: |
           echo "Starting Safari build..."
@@ -137,27 +143,16 @@ jobs:
         run: |
           if [ ! -d ".output/safari" ]; then
             echo "❌ Safari build directory not found"
-            echo "Contents of .output:"
-            ls -la .output/ || echo "No .output directory"
             exit 1
           fi
-          
           echo "✅ Safari build directory found"
-          echo "Safari build contents:"
-          ls -la .output/safari/
         
       - name: Create Safari archive
         run: |
           VERSION="${{ needs.release.outputs.version }}"
-          if [ -d ".output/safari" ]; then
-            cd .output/safari
-            zip -r "../../@eatsjobs-media-mock-browser-extension-safari-v${VERSION}.zip" .
-            cd ../..
-            echo "✅ Safari archive created"
-          else
-            echo "❌ Cannot create archive - Safari build directory missing"
-            exit 1
-          fi
+          cd .output/safari
+          zip -r "../../@eatsjobs-media-mock-browser-extension-safari-v${VERSION}.zip" .
+          cd ../..
           
       - name: Upload Safari artifact
         uses: actions/upload-artifact@v4
