@@ -9,7 +9,7 @@ interface MediaMockWindow extends Window {
 }
 
 export default defineUnlistedScript(() => {
-  const mediaWindow = window as MediaMockWindow;
+  const mediaWindow = window as unknown as MediaMockWindow;
 
   // Initialize MediaMock in the main world
   try {

@@ -1,6 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
 import { devices } from '@eatsjobs/media-mock';
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { 
+  Header, 
+  Message, 
+  StatusIndicator, 
+  DeviceSelector, 
+  MediaSourceUpload, 
+  ActionButtons,
+  VersionInfo 
+} from './components';
 
 interface MockState {
   isActive: boolean;
@@ -10,6 +19,7 @@ interface MockState {
   autoDetected: boolean;
   uploadedFile: File | null;
   uploadedFileName: string;
+  isDragging: boolean;
 }
 
 // User agent detection for smart device selection
@@ -30,7 +40,6 @@ function detectDeviceFromUserAgent(userAgent: string): keyof typeof devices {
   return 'Mac Desktop';
 }
 
-
 function Popup() {
   const [state, setState] = useState<MockState>({
     isActive: false,
@@ -39,10 +48,13 @@ function Popup() {
     debugMode: false,
     autoDetected: false,
     uploadedFile: null,
-    uploadedFileName: ''
+    uploadedFileName: '',
+    isDragging: false
   });
   const [loading, setLoading] = useState(false);
+  const [loadingAction, setLoadingAction] = useState('');
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState<'success' | 'error'>('success');
 
   useEffect(() => {
     initializePopup();
@@ -105,6 +117,7 @@ function Popup() {
     }
 
     setLoading(true);
+    setLoadingAction('Starting MediaMock...');
     try {
       const response = await sendMessageToActiveTab({
         action: 'START_MOCK',
@@ -125,11 +138,13 @@ function Popup() {
       showMessage(`Failed to start: ${(error as Error).message}`, 'error');
     } finally {
       setLoading(false);
+      setLoadingAction('');
     }
   };
 
   const handleStopMock = async () => {
     setLoading(true);
+    setLoadingAction('Stopping MediaMock...');
     try {
       const response = await sendMessageToActiveTab({ action: 'STOP_MOCK' });
       
@@ -143,11 +158,13 @@ function Popup() {
       showMessage(`Failed to stop: ${(error as Error).message}`, 'error');
     } finally {
       setLoading(false);
+      setLoadingAction('');
     }
   };
 
   const handleTestCamera = async () => {
     setLoading(true);
+    setLoadingAction('Testing camera access...');
     try {
       const response = await sendMessageToActiveTab({ action: 'TEST_CAMERA' });
       
@@ -160,11 +177,13 @@ function Popup() {
       showMessage(`Camera test failed: ${(error as Error).message}`, 'error');
     } finally {
       setLoading(false);
+      setLoadingAction('');
     }
   };
 
-  const showMessage = (text: string, _type: 'success' | 'error') => {
+  const showMessage = (text: string, type: 'success' | 'error') => {
     setMessage(text);
+    setMessageType(type);
     setTimeout(() => setMessage(''), 3000);
   };
 
@@ -180,7 +199,23 @@ function Popup() {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+    validateAndProcessFile(file);
+  };
 
+  const clearUploadedFile = () => {
+    setState(prev => ({
+      ...prev,
+      mediaUrl: '',
+      uploadedFile: null,
+      uploadedFileName: ''
+    }));
+    
+    // Clear the file input
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+  };
+
+  const validateAndProcessFile = (file: File) => {
     // Validate file type
     const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
     const validVideoTypes = ['video/mp4', 'video/webm', 'video/mov', 'video/avi', 'video/mkv'];
@@ -188,14 +223,14 @@ function Popup() {
 
     if (!validTypes.includes(file.type)) {
       showMessage('Please select a valid image or video file', 'error');
-      return;
+      return false;
     }
 
     // Check file size (limit to 50MB)
     const maxSize = 50 * 1024 * 1024; // 50MB
     if (file.size > maxSize) {
       showMessage('File size must be less than 50MB', 'error');
-      return;
+      return false;
     }
 
     // Read file and convert to data URL
@@ -216,162 +251,82 @@ function Popup() {
     };
 
     reader.readAsDataURL(file);
+    return true;
   };
 
-  const clearUploadedFile = () => {
-    setState(prev => ({
-      ...prev,
-      mediaUrl: '',
-      uploadedFile: null,
-      uploadedFileName: ''
-    }));
-    
-    // Clear the file input
-    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
-    if (fileInput) fileInput.value = '';
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setState(prev => ({ ...prev, isDragging: true }));
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setState(prev => ({ ...prev, isDragging: false }));
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setState(prev => ({ ...prev, isDragging: false }));
+
+    if (state.isActive) return;
+
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length === 0) return;
+
+    const file = files[0]; // Only take the first file
+    validateAndProcessFile(file);
   };
 
   return (
     <div className="popup-container">
-      <div className="header">
-        <div className="logo">M</div>
-        <div className="title">MediaMock</div>
-      </div>
-
-      {message && (
-        <div className={`message ${message.includes('success') ? 'success' : 'error'}`}>
-          {message}
-        </div>
-      )}
-
-      <div className={`status ${state.isActive ? 'active' : 'inactive'}`}>
-        Status: {state.isActive ? 'Active' : 'Inactive'}
-      </div>
-
-      <div className="section">
-        <div className="section-title">
-          Device Configuration
-          {state.autoDetected && <span className="auto-badge">Auto</span>}
-        </div>
-        <select 
-          className="select"
-          value={state.device}
-          onChange={(e) => handleDeviceChange(e.target.value)}
-          disabled={state.isActive}
-        >
-          {Object.entries(devices).map(([deviceName, _deviceConfig]) => {
-            // Classify device based on name patterns
-            const isMobile = deviceName.includes('iPhone') || deviceName.includes('Samsung');
-            return (
-              <option key={deviceName} value={deviceName}>
-                {deviceName} ({isMobile ? 'Mobile' : 'Desktop'})
-              </option>
-            );
-          })}
-        </select>
-        
-        {state.device && devices[state.device as keyof typeof devices] && (
-          <div className="device-info">
-            <div className="device-detail">
-              <strong>Resolutions:</strong> {devices[state.device as keyof typeof devices].videoResolutions.map(res => `${res.width}x${res.height}`).join(', ')}
-            </div>
-            <div className="device-detail">
-              <strong>Cameras:</strong> {devices[state.device as keyof typeof devices].mediaDeviceInfo.filter(d => d.kind === 'videoinput').length}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="section">
-        <div className="section-title">Media Source</div>
-        
-        {/* File Upload Section */}
-        <div className="upload-section">
-          <input
-            id="file-upload"
-            type="file"
-            accept="image/*,video/*"
-            onChange={handleFileUpload}
-            disabled={state.isActive}
-            className="file-input"
-          />
-          <label htmlFor="file-upload" className={`button button-upload ${state.isActive ? 'disabled' : ''}`}>
-            📁 Upload Local File
-          </label>
-        </div>
-
-        {/* Show uploaded file info */}
-        {state.uploadedFile && (
-          <div className="uploaded-file-info">
-            <div className="file-details">
-              <span className="file-icon">
-                {state.uploadedFile.type.startsWith('video/') ? '🎥' : '🖼️'}
-              </span>
-              <span className="file-name">{state.uploadedFileName}</span>
-              <span className="file-size">
-                ({(state.uploadedFile.size / 1024 / 1024).toFixed(1)} MB)
-              </span>
-            </div>
-            <button
-              className="button button-small button-danger"
-              onClick={clearUploadedFile}
-              disabled={state.isActive}
-            >
-              ✕
-            </button>
-          </div>
-        )}
-
-        {/* URL Input */}
-        <input 
-          type="text"
-          className="input"
-          placeholder="Or enter image/video URL"
-          value={state.uploadedFile ? '' : state.mediaUrl}
-          onChange={(e) => setState(prev => ({ ...prev, mediaUrl: e.target.value }))}
-          disabled={state.isActive || !!state.uploadedFile}
-        />
-      </div>
-
-      <div className="section">
-        <label className="checkbox-label">
-          <input 
-            type="checkbox"
-            checked={state.debugMode}
-            onChange={(e) => setState(prev => ({ ...prev, debugMode: e.target.checked }))}
-            disabled={state.isActive}
-          />
-          Enable debug mode
-        </label>
-      </div>
-
-      <div className="section buttons">
-        <button
-          className="button button-primary"
-          onClick={handleStartMock}
-          disabled={loading || state.isActive}
-        >
-          {loading ? 'Starting...' : 'Start Mock'}
-        </button>
-        
-        <button
-          className="button button-danger"
-          onClick={handleStopMock}
-          disabled={loading || !state.isActive}
-        >
-          {loading ? 'Stopping...' : 'Stop Mock'}
-        </button>
-      </div>
-
-      <div className="section">
-        <button
-          className="button button-secondary full-width"
-          onClick={handleTestCamera}
-          disabled={loading}
-        >
-          {loading ? 'Testing...' : 'Test Camera Access'}
-        </button>
-      </div>
+      <Header />
+      
+      <Message message={message} type={messageType} />
+      
+      <StatusIndicator isActive={state.isActive} />
+      
+      <DeviceSelector
+        selectedDevice={state.device}
+        autoDetected={state.autoDetected}
+        isActive={state.isActive}
+        onDeviceChange={handleDeviceChange}
+      />
+      
+      <MediaSourceUpload
+        mediaUrl={state.mediaUrl}
+        uploadedFile={state.uploadedFile}
+        uploadedFileName={state.uploadedFileName}
+        isDragging={state.isDragging}
+        isActive={state.isActive}
+        onFileUpload={handleFileUpload}
+        onMediaUrlChange={(url) => setState(prev => ({ ...prev, mediaUrl: url }))}
+        onClearFile={clearUploadedFile}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      />
+      
+      <ActionButtons
+        isActive={state.isActive}
+        loading={loading}
+        loadingAction={loadingAction}
+        debugMode={state.debugMode}
+        onStart={handleStartMock}
+        onStop={handleStopMock}
+        onTest={handleTestCamera}
+        onDebugToggle={(checked) => setState(prev => ({ ...prev, debugMode: checked }))}
+      />
+      
+      <VersionInfo />
     </div>
   );
 }

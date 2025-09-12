@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test-and-build-linux:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run type check
+        run: npm run type-check
+        
+      - name: Build Chrome extension
+        run: npm run build
+        
+      - name: Build Firefox extension
+        run: npm run build:firefox
+        
+      - name: Check build outputs
+        run: |
+          echo "Checking build outputs..."
+          ls -la .output/
+          if [ -d ".output/chrome-mv3" ]; then
+            echo "✅ Chrome build successful"
+            ls -la .output/chrome-mv3/
+          else
+            echo "❌ Chrome build failed"
+            exit 1
+          fi
+          if [ -d ".output/firefox-mv2" ]; then
+            echo "✅ Firefox build successful"
+            ls -la .output/firefox-mv2/
+          else
+            echo "❌ Firefox build failed"
+            exit 1
+          fi
+          
+      - name: Upload Linux build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-builds-linux
+          path: |
+            .output/chrome-mv3/
+            .output/firefox-mv2/
+          retention-days: 30
+
+  test-and-build-macos:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run type check
+        run: npm run type-check
+        
+      - name: Build Safari extension
+        run: npm run build:safari
+        
+      - name: Check Safari build output
+        run: |
+          echo "Checking Safari build output..."
+          ls -la .output/
+          if [ -d ".output/safari" ]; then
+            echo "✅ Safari build successful"
+            ls -la .output/safari/
+          else
+            echo "❌ Safari build failed"
+            exit 1
+          fi
+          
+      - name: Upload macOS build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-builds-macos
+          path: |
+            .output/safari/
+          retention-days: 30

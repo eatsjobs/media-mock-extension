@@ -18,16 +18,18 @@ A **cross-browser extension** (Chrome, Firefox, Safari) built with [WXT](https:/
 
 ### Prerequisites
 
-- Node.js 16+ 
+- Node.js 16+
 
 ### Installation
 
 1. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 2. **Build for your target browser**:
+
    ```bash
    # Chrome
    npm run build
@@ -40,56 +42,60 @@ A **cross-browser extension** (Chrome, Firefox, Safari) built with [WXT](https:/
    ```
 
 3. **Load the extension**:
-   
+
    **Chrome/Edge:**
    - Open `chrome://extensions/` or `edge://extensions/`
    - Enable "Developer mode"
    - Click "Load unpacked" and select `.output/chrome-mv3`
-   
+
    **Firefox:**
    - Open `about:debugging`
    - Click "This Firefox" → "Load Temporary Add-on"
    - Select any file in `.output/firefox-mv2`
-   
+
    **Safari (macOS only):**
-   
+
    Safari Web Extensions require conversion to native App Extensions:
-   
+
    1. **Prerequisites**:
       - macOS 10.14.6+ with Xcode 12+
       - Apple Developer account (for distribution)
-   
+
    2. **Convert to App Extension**:
+
       ```bash
       xcrun safari-web-extension-converter .output/safari-mv2 --macos-only --project-location ./Safari-MediaMock
       ```
-   
+
    3. **Build in Xcode**:
-      - Open `Safari-MediaMock/MediaMock.xcodeproj` 
+      - Open `Safari-MediaMock/MediaMock.xcodeproj`
       - Select your development team in project settings
       - Build and run (⌘+R) - this installs the extension locally
-   
+
    4. **Enable in Safari**:
       - Safari → Preferences → Extensions
       - Enable "MediaMock" extension
       - Grant necessary permissions when prompted
-   
+
    5. **For Distribution** (optional):
       - Archive the app (Product → Archive)
       - Upload to Mac App Store via App Store Connect
       - Safari extensions must be distributed through App Store
-   
+
    **Development Mode**: The extension will be available immediately after building in Xcode for local testing.
 
 ## 💡 Usage
 
 ### 🤖 **Smart Auto-Selection**
+
 The extension automatically detects your browser context and pre-selects the most appropriate device:
+
 - **iOS Safari** → iPhone 12 (mobile portrait)
-- **Android Mobile** → Samsung Galaxy M53 (mobile portrait) 
+- **Android Mobile** → Samsung Galaxy M53 (mobile portrait)
 - **Desktop Browser** → Mac Desktop (desktop landscape)
 
 ### 📋 **Manual Steps**
+
 1. **Navigate** to any website that uses camera/microphone
 2. **Click** the MediaMock extension icon in the toolbar  
 3. **Review** the auto-selected device (indicated by green "AUTO" badge) or manually change if needed
@@ -106,6 +112,7 @@ The extension automatically detects your browser context and pre-selects the mos
 Built with **WXT Framework** for optimal cross-browser compatibility:
 
 ### 📁 Project Structure
+
 ```
 entrypoints/
 ├── popup/              # React popup interface
@@ -125,6 +132,7 @@ public/
 ### 🔧 Technical Details
 
 **Content Script (`content.ts`)**:
+
 - Imports and exposes MediaMock library directly via ES modules
 - Dynamically populates device list from `MediaMock.devices`
 - Handles extension ↔ MediaMock library communication with proper TypeScript typing
@@ -132,14 +140,16 @@ public/
 - Provides visual feedback for camera testing
 
 **React Popup (`popup/main.tsx`)**:
+
 - Clean, modern interface with dynamic device selection from library
 - **Smart auto-detection** based on browser user agent with visual "AUTO" indicator
 - Shows device details (mobile/desktop, resolutions, camera count)
-- Real-time status monitoring 
+- Real-time status monitoring
 - Built-in asset shortcuts
 - Cross-browser messaging APIs with TypeScript interfaces
 
 **WXT Configuration (`wxt.config.ts`)**:
+
 - Automatic manifest generation for all browsers
 - Web-accessible resources configuration
 - TypeScript and React support
@@ -148,13 +158,14 @@ public/
 ## 🎯 Media Source Options
 
 ### **📁 Local File Upload**
+
 - **Supported formats**: JPEG, PNG, GIF, WebP (images), MP4, WebM, MOV, AVI, MKV (videos)
 - **File size limit**: 50MB maximum
 - **Data processing**: Files converted to data URLs for secure extension use
 - **Visual feedback**: File name, size, and type indicator with easy removal
 
-
 ### **🌐 Custom URLs**
+
 - Any publicly accessible image or video URL
 - Supports same formats as local files
 - Real-time validation and error handling
@@ -185,7 +196,8 @@ npm run build:safari    # Safari
 | Firefox | 78+ | ✅ Full Support | Direct installation from `.output/firefox-mv2` |
 | Safari | 14+ | ✅ Full Support | Requires Xcode conversion, macOS only |
 
-### Safari-Specific Notes:
+### Safari-Specific Notes
+
 - **Native App Wrapper**: Safari Web Extensions run inside a native macOS app
 - **App Store Requirement**: Public distribution requires Mac App Store approval
 - **Permission Model**: More restrictive than Chrome/Firefox
@@ -200,23 +212,26 @@ npm run build:safari    # Safari
 ## 🤝 Integration with MediaMock
 
 The extension seamlessly integrates with the MediaMock library by:
+
 1. **Importing** `@eatsjobs/media-mock` as a proper dependency with full ES module support
-2. **Dynamically loading** device configurations from `MediaMock.devices` 
+2. **Dynamically loading** device configurations from `MediaMock.devices`
 3. **Providing** a user-friendly interface with real-time device information
 4. **Converting** relative asset URLs to extension URLs automatically
 5. **Managing** mock lifecycle (start/stop/debug) through extension APIs with TypeScript safety
 
-### Key Improvements over UMD approach:
+### Key Improvements over UMD approach
+
 - ✅ **Automatic device sync** - New devices added to MediaMock appear instantly
 - ✅ **Smart auto-selection** - Detects browser context and pre-selects appropriate device
 - ✅ **Type safety** - Full TypeScript support with proper interfaces
 - ✅ **Version consistency** - Always uses the exact MediaMock version specified
-- ✅ **Better tree shaking** - Only includes used MediaMock functionality 
+- ✅ **Better tree shaking** - Only includes used MediaMock functionality
 - ✅ **Rich device info** - Shows resolutions, camera count, mobile/desktop classification
 - ✅ **Intuitive UX** - Visual "AUTO" indicator and seamless device switching
 - ✅ **Local file support** - Upload custom media directly from computer with drag & drop UI
 
 Perfect for:
+
 - **QA Testing**: Automated camera/microphone testing
 - **Development**: Testing media features without hardware
 - **Demos**: Consistent media behavior across environments
