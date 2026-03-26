@@ -1,2 +1,5 @@
 node_modules
 .output
+.wxt
+.DS_Store
+public/media-mock.umd.min.js
