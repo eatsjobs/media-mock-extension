@@ -8,6 +8,8 @@
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
     "build:safari": "wxt build -b safari",
+    "build:safari:ios": "npm run build:safari",
+    "dev:safari:ios": "npm run dev:safari",
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
     "dev:safari": "wxt -b safari",
@@ -18,16 +20,16 @@
     "changeset:publish": "changeset publish"
   },
   "dependencies": {
-    "@eatsjobs/media-mock": "^1.2.1",
+    "@eatsjobs/media-mock": "^1.2.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
-    "@types/chrome": "~0.1.10",
+    "@types/chrome": "~0.1.38",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "typescript": "^5.7.0",
-    "wxt": "^0.20.20"
+    "wxt": "~0.20.20"
   }
 }

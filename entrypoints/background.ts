@@ -1,4 +1,6 @@
-export default defineBackground(() => {
+export default defineBackground({
+  persistent: false,
+  main() {
   console.log('MediaMock background script loaded');
 
   // Handle messages from popup and inject scripts into active tab
@@ -29,4 +31,5 @@ export default defineBackground(() => {
 
     return true; // Keep message channel open for async response
   });
+  }
 });
