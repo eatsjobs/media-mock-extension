@@ -7,7 +7,6 @@ import {
   readdirSync,
   readFileSync,
   rmSync,
-  symlinkSync,
   writeFileSync,
 } from 'fs';
 import { join, resolve } from 'path';
@@ -23,67 +22,66 @@ const IOS_RESOURCES = resolve(
   'ios-media-mock-extension Extension',
   'Resources',
 );
-// Relative from the symlink's own location to the iOS-ready output dir
-const IOS_SYMLINK_TARGET = '../../.output/safari-mv2-ios';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   vite: () => ({
     build: {
-      target: ['chrome68', 'safari14'],
+      target: ['chrome85', 'safari14'],
     },
   }),
   hooks: {
-    // Auto-create the Xcode Resources symlink whenever the iOS project is present.
-    // Runs on every wxt invocation but is a no-op if the symlink already exists.
+    // Ensure the Xcode Resources directory exists when the iOS project is present.
     ready(wxt) {
       if (!existsSync(resolve('ios-media-mock-extension'))) return;
       const stat = lstatSync(IOS_RESOURCES, { throwIfNoEntry: false });
-      if (stat?.isSymbolicLink()) return;
-      if (stat) rmSync(IOS_RESOURCES, { recursive: true, force: true });
-      symlinkSync(IOS_SYMLINK_TARGET, IOS_RESOURCES);
-      wxt.logger.info('iOS: created Resources → .output/safari-mv2-ios symlink');
+      // Remove stale symlink — Xcode 16 file-system sync doesn't follow symlinks
+      if (stat?.isSymbolicLink()) rmSync(IOS_RESOURCES);
+      if (!existsSync(IOS_RESOURCES)) mkdirSync(IOS_RESOURCES, { recursive: true });
     },
 
-    // iOS Safari requires content scripts at the bundle root (not in subdirs).
-    // We write a separate safari-mv2-ios/ directory so WXT's own output is
-    // never modified (avoids conflicts with WXT's post-build file listing).
+    // Flatten the output directory: move content-scripts/* to the bundle root.
+    // Safari iOS doesn't support nested folders inside the extension bundle —
+    // all resources must live at the top level, otherwise they silently fail
+    // to load. We apply this to every build (not just Safari) so the output
+    // structure is consistent across all browsers.
     'build:done'(wxt) {
-      if (wxt.config.browser !== 'safari') return;
+      const outDir = wxt.config.outDir;
+      const csDir = join(outDir, 'content-scripts');
 
-      const srcDir = wxt.config.outDir; // .output/safari-mv2
-      const iosDir = srcDir + '-ios'; // .output/safari-mv2-ios
-
-      // Rebuild iOS output dir from scratch
-      rmSync(iosDir, { recursive: true, force: true });
-      mkdirSync(iosDir, { recursive: true });
-
-      // Copy every root-level file straight across; skip content-scripts/ dir
-      for (const entry of readdirSync(srcDir, { withFileTypes: true })) {
-        if (entry.isDirectory()) continue; // content-scripts/ gets handled below
-        copyFileSync(join(srcDir, entry.name), join(iosDir, entry.name));
-      }
-
-      // Flatten content-scripts/* to ios root
-      const csDir = join(srcDir, 'content-scripts');
       if (existsSync(csDir)) {
+        // Copy content scripts to the root (keep the originals — WXT still
+        // references them in its post-build file listing)
         for (const entry of readdirSync(csDir, { withFileTypes: true })) {
           if (entry.isFile()) {
-            copyFileSync(join(csDir, entry.name), join(iosDir, entry.name));
+            copyFileSync(join(csDir, entry.name), join(outDir, entry.name));
           }
         }
+
+        // Patch manifest: strip "content-scripts/" prefix from JS/CSS paths
+        const manifestPath = join(outDir, 'manifest.json');
+        const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
+        for (const cs of manifest.content_scripts ?? []) {
+          cs.js = cs.js?.map((p: string) => p.replace(/^content-scripts\//, ''));
+          cs.css = cs.css?.map((p: string) => p.replace(/^content-scripts\//, ''));
+        }
+        writeFileSync(manifestPath, JSON.stringify(manifest));
       }
 
-      // Patch manifest: strip "content-scripts/" prefix from JS/CSS paths
-      const manifestPath = join(iosDir, 'manifest.json');
-      const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
-      for (const cs of manifest.content_scripts ?? []) {
-        cs.js = cs.js?.map((p: string) => p.replace(/^content-scripts\//, ''));
-        cs.css = cs.css?.map((p: string) => p.replace(/^content-scripts\//, ''));
-      }
-      writeFileSync(manifestPath, JSON.stringify(manifest));
+      wxt.logger.success(`Flat bundle written to ${outDir}`);
 
-      wxt.logger.success('Safari iOS: flat bundle written to .output/safari-mv2-ios');
+      // Copy built files into Xcode extension's Resources directory
+      // (real files, not a symlink — Xcode 16 file-system sync doesn't follow symlinks)
+      if (wxt.config.browser === 'safari' && existsSync(resolve('ios-media-mock-extension'))) {
+        rmSync(IOS_RESOURCES, { recursive: true, force: true });
+        mkdirSync(IOS_RESOURCES, { recursive: true });
+        for (const entry of readdirSync(outDir, { withFileTypes: true })) {
+          if (entry.isFile()) {
+            copyFileSync(join(outDir, entry.name), join(IOS_RESOURCES, entry.name));
+          }
+        }
+        wxt.logger.success('Copied resources into Xcode extension');
+      }
     },
   },
   manifest: {

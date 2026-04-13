@@ -52,31 +52,56 @@ interface MockState {
 
 // All structural styles are inline so page CSS can never override them
 const S = {
-  fab: {
+  fabWrapper: (hidden: boolean): CSSProperties => ({
     position: 'fixed',
     bottom: '80px',
-    right: '16px',
+    right: 0,
+    zIndex: 2147483646,
+    display: 'flex',
+    alignItems: 'center',
+    pointerEvents: 'auto',
+    transform: hidden ? 'translateX(56px)' : 'translateX(0)',
+    transition: 'transform 0.25s ease',
+  }),
+  fabToggle: {
+    width: '20px',
+    height: '40px',
+    border: 'none',
+    borderRadius: '6px 0 0 6px',
+    background: '#1e40af',
+    color: 'white',
+    fontSize: '12px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    outline: 'none',
+    boxShadow: '-2px 2px 8px rgba(0,0,0,0.25)',
+    flexShrink: 0,
+  } as CSSProperties,
+  fab: {
     width: '56px',
     height: '56px',
-    borderRadius: '50%',
+    borderRadius: '12px 0 0 12px',
     background: '#2563eb',
     color: 'white',
     fontSize: '22px',
     border: 'none',
     cursor: 'pointer',
-    zIndex: 2147483646,
     boxShadow: '0 4px 16px rgba(0,0,0,0.35)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    pointerEvents: 'auto',
     padding: 0,
     outline: 'none',
+    position: 'relative',
+    flexShrink: 0,
   } as CSSProperties,
   fabDot: (active: boolean): CSSProperties => ({
     position: 'absolute',
-    top: '10px',
-    right: '10px',
+    top: '6px',
+    right: '6px',
     width: '10px',
     height: '10px',
     borderRadius: '50%',
@@ -125,6 +150,7 @@ const S = {
 
 function OverlayApp() {
   const [isOpen, setIsOpen] = useState(false);
+  const [fabHidden, setFabHidden] = useState(false);
   const [state, setState] = useState<MockState>({
     isActive: false,
     device: detectDevice(),
@@ -274,10 +300,19 @@ function OverlayApp() {
 
   return (
     <>
-      <button style={S.fab} onClick={() => setIsOpen(o => !o)} aria-label="Toggle MediaMock">
-        <span style={S.fabDot(state.isActive)} />
-        📷
-      </button>
+      <div style={S.fabWrapper(fabHidden)}>
+        <button
+          style={S.fabToggle}
+          onClick={() => setFabHidden(h => !h)}
+          aria-label={fabHidden ? 'Show MediaMock' : 'Hide MediaMock'}
+        >
+          {fabHidden ? '‹' : '›'}
+        </button>
+        <button style={S.fab} onClick={() => setIsOpen(o => !o)} aria-label="Toggle MediaMock">
+          <span style={S.fabDot(state.isActive)} />
+          📷
+        </button>
+      </div>
 
       {isOpen && <div style={S.backdrop} onClick={() => setIsOpen(false)} />}
 
@@ -361,7 +396,7 @@ export default defineContentScript({
         const fab = document.createElement('button');
         fab.textContent = '📷';
         fab.setAttribute('aria-label', 'MediaMock (fallback)');
-        fab.style.cssText = 'position:fixed;bottom:80px;right:16px;width:56px;height:56px;border-radius:50%;background:#2563eb;color:white;font-size:22px;border:none;cursor:pointer;z-index:2147483646;box-shadow:0 4px 16px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;padding:0;';
+        fab.style.cssText = 'position:fixed;bottom:80px;right:0;width:56px;height:56px;border-radius:12px 0 0 12px;background:#2563eb;color:white;font-size:22px;border:none;cursor:pointer;z-index:2147483646;box-shadow:0 4px 16px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;padding:0;';
         document.body.appendChild(fab);
       }
     };

@@ -28,6 +28,6 @@
     
     "types": ["@types/chrome"]
   },
-  "include": ["entrypoints", "components", "utils", "types"],
+  "include": ["entrypoints", "components", "utils", "types", "wxt-env.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
