@@ -1,5 +1,11 @@
 # @eatsjobs/media-mock-browser-extension
 
+## 1.1.0
+
+### Minor Changes
+
+- 8aad1d8: Better UI, support for ios extension
+
 ## 1.0.0
 
 ### Major Changes
