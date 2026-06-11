@@ -1,5 +1,11 @@
 # @eatsjobs/media-mock-browser-extension
 
+## 1.1.1
+
+### Patch Changes
+
+- 9e9ef93: Fix Safari release path and add iOS extension artifact to GitHub releases
+
 ## 1.1.0
 
 ### Minor Changes
