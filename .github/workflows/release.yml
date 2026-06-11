@@ -137,28 +137,39 @@ jobs:
         run: |
           echo "Starting Safari build..."
           npm run build:safari
-          echo "Safari build completed"
-          
+          npm run build:safari-ios
+          echo "Safari builds completed"
+
       - name: Verify Safari build
         run: |
-          if [ ! -d ".output/safari" ]; then
-            echo "❌ Safari build directory not found"
+          if [ ! -d ".output/safari-mv2" ]; then
+            echo "❌ Safari desktop build directory not found"
             exit 1
           fi
-          echo "✅ Safari build directory found"
-        
-      - name: Create Safari archive
+          echo "✅ Safari desktop build directory found"
+          if [ ! -d ".output/safari-mv2-ios" ]; then
+            echo "❌ Safari iOS build directory not found"
+            exit 1
+          fi
+          echo "✅ Safari iOS build directory found"
+
+      - name: Create Safari archives
         run: |
           VERSION="${{ needs.release.outputs.version }}"
-          cd .output/safari
+          cd .output/safari-mv2
           zip -r "../../@eatsjobs-media-mock-browser-extension-safari-v${VERSION}.zip" .
           cd ../..
-          
-      - name: Upload Safari artifact
+          cd .output/safari-mv2-ios
+          zip -r "../../@eatsjobs-media-mock-browser-extension-safari-ios-v${VERSION}.zip" .
+          cd ../..
+
+      - name: Upload Safari artifacts
         uses: actions/upload-artifact@v4
         with:
           name: safari-build
-          path: "@eatsjobs-media-mock-browser-extension-safari-v${{ needs.release.outputs.version }}.zip"
+          path: |
+            @eatsjobs-media-mock-browser-extension-safari-v${{ needs.release.outputs.version }}.zip
+            @eatsjobs-media-mock-browser-extension-safari-ios-v${{ needs.release.outputs.version }}.zip
 
   create-github-release:
     name: Create GitHub Release

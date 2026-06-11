@@ -8,6 +8,7 @@
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
     "build:safari": "wxt build -b safari",
+    "build:safari-ios": "wxt build -b safari -m ios",
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
     "dev:safari": "wxt -b safari",
