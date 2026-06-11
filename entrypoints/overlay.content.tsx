@@ -50,6 +50,14 @@ interface MockState {
   isDragging: boolean;
 }
 
+type StoredMockSettings = Partial<{
+  mockActive: boolean;
+  mockDevice: string;
+  mediaUrl: string;
+  uploadedFileName: string;
+  mockDebugMode: boolean;
+}>;
+
 // All structural styles are inline so page CSS can never override them
 const S = {
   fabWrapper: (hidden: boolean): CSSProperties => ({
@@ -174,12 +182,13 @@ function OverlayApp() {
 
   useEffect(() => {
     chrome.storage.local.get(['mockActive', 'mockDevice', 'mediaUrl', 'uploadedFileName', 'mockDebugMode'], (result) => {
+      const stored = result as StoredMockSettings;
       setState(prev => ({
         ...prev,
-        ...(result.mockDevice ? { device: result.mockDevice, autoDetected: false } : {}),
-        ...(result.mediaUrl ? { mediaUrl: result.mediaUrl } : {}),
-        ...(result.uploadedFileName ? { uploadedFileName: result.uploadedFileName } : {}),
-        ...(result.mockDebugMode ? { debugMode: result.mockDebugMode } : {}),
+        ...(stored.mockDevice ? { device: stored.mockDevice, autoDetected: false } : {}),
+        ...(stored.mediaUrl ? { mediaUrl: stored.mediaUrl } : {}),
+        ...(stored.uploadedFileName ? { uploadedFileName: stored.uploadedFileName } : {}),
+        ...(typeof stored.mockDebugMode === 'boolean' ? { debugMode: stored.mockDebugMode } : {}),
       }));
     });
 

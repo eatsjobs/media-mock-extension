@@ -22,6 +22,11 @@ interface MockState {
   isDragging: boolean;
 }
 
+type StoredPopupSettings = Partial<{
+  mediaUrl: string;
+  uploadedFileName: string;
+}>;
+
 // User agent detection for smart device selection
 function detectDeviceFromUserAgent(userAgent: string): keyof typeof devices {
   const ua = userAgent.toLowerCase();
@@ -90,11 +95,14 @@ function Popup() {
 
     // Restore persisted media URL
     chrome.storage.local.get(['mediaUrl', 'uploadedFileName'], (result) => {
-      if (result.mediaUrl) {
+      const stored = result as StoredPopupSettings;
+      const mediaUrl = stored.mediaUrl;
+      const uploadedFileName = stored.uploadedFileName || '';
+      if (mediaUrl) {
         setState(prev => ({
           ...prev,
-          mediaUrl: result.mediaUrl,
-          uploadedFileName: result.uploadedFileName || '',
+          mediaUrl,
+          uploadedFileName,
         }));
       }
     });
