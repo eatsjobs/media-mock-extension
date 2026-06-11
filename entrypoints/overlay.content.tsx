@@ -376,6 +376,9 @@ export default defineContentScript({
     console.log('[MediaMock] overlay script running on', navigator.userAgent);
 
     const mount = () => {
+      // Prevent double-mounting (Safari can re-inject content scripts on SPA navigations)
+      if (document.querySelector('[data-mediamock-overlay]')) return;
+
       try {
         // Scope popup styles to .mm-popup so they don't affect the page
         const style = document.createElement('style');
@@ -386,6 +389,7 @@ export default defineContentScript({
         document.head.appendChild(style);
 
         const container = document.createElement('div');
+        container.setAttribute('data-mediamock-overlay', '');
         document.body.appendChild(container);
 
         createRoot(container).render(<OverlayApp />);
@@ -393,9 +397,11 @@ export default defineContentScript({
       } catch (err) {
         console.error('[MediaMock] overlay failed to mount:', err);
         // Fallback: plain DOM FAB button so we know the script ran
+        if (document.querySelector('[data-mediamock-overlay]')) return;
         const fab = document.createElement('button');
         fab.textContent = '📷';
         fab.setAttribute('aria-label', 'MediaMock (fallback)');
+        fab.setAttribute('data-mediamock-overlay', '');
         fab.style.cssText = 'position:fixed;bottom:80px;right:0;width:56px;height:56px;border-radius:12px 0 0 12px;background:#2563eb;color:white;font-size:22px;border:none;cursor:pointer;z-index:2147483646;box-shadow:0 4px 16px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;padding:0;';
         document.body.appendChild(fab);
       }
