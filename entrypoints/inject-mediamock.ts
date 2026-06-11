@@ -1,25 +1,30 @@
 // MediaMock injection script - runs in MAIN world
-import { devices, MediaMock } from "@eatsjobs/media-mock";
-
-interface MediaMockWindow extends Window {
-  MediaMock: typeof MediaMock;
-  MediaMockDevices: typeof devices;
-  MediaMockPageContextReady: boolean;
-  MediaMockActive: boolean;
-}
+// Relies on the UMD bundle (media-mock.umd.min.js) being loaded first,
+// which sets window.MediaMock = { MediaMock: instance, devices: {...} }
+import type { MediaMockClass, DeviceConfig } from "@eatsjobs/media-mock";
 
 export default defineUnlistedScript(() => {
+  interface MediaMockNamespace {
+    MediaMock: InstanceType<typeof MediaMockClass>;
+    devices: Record<string, DeviceConfig>;
+  }
+
+  interface MediaMockWindow extends Window {
+    MediaMock: MediaMockNamespace;
+    MediaMockPageContextReady: boolean;
+    MediaMockActive: boolean;
+  }
+
   const mediaWindow = window as unknown as MediaMockWindow;
 
-  // Initialize MediaMock in the main world
   try {
-    // Make MediaMock available globally in main world
-    mediaWindow.MediaMock = MediaMock;
-    mediaWindow.MediaMockDevices = devices;
     mediaWindow.MediaMockPageContextReady = true;
 
     console.log("MediaMock loaded in main world");
-    console.log("Available devices:", Object.keys(devices));
+    console.log("Available devices:", Object.keys(mediaWindow.MediaMock.devices));
+
+    // Signal to content script that the inject script is ready
+    window.dispatchEvent(new CustomEvent("mediamock:ready"));
 
     // Listen for commands from content script
     window.addEventListener("mediamock:command", async (event) => {
@@ -27,9 +32,10 @@ export default defineUnlistedScript(() => {
       const { messageId, command, config } = customEvent.detail;
 
       try {
-        let result: { success: boolean; status?: string; } | 
-                    { success: boolean; error: string } | 
+        let result: { success: boolean; status?: string } |
+                    { success: boolean; error: string } |
                     { success: boolean; isActive: boolean };
+
         switch (command) {
           case "START_MOCK":
             result = await startMock(config);
@@ -39,6 +45,10 @@ export default defineUnlistedScript(() => {
             break;
           case "TEST_CAMERA":
             result = await testCamera();
+            break;
+          case "SET_MEDIA_URL":
+            await mediaWindow.MediaMock.MediaMock.setMediaURL(config.mediaUrl);
+            result = { success: true, status: "media_updated" };
             break;
           case "GET_STATUS":
             result = {
@@ -50,14 +60,12 @@ export default defineUnlistedScript(() => {
             result = { success: false, error: "Unknown command: " + command };
         }
 
-        // Send response back to content script
         window.dispatchEvent(
           new CustomEvent("mediamock:response", {
             detail: { messageId, result },
           }),
         );
       } catch (error) {
-        // Send error response
         window.dispatchEvent(
           new CustomEvent("mediamock:response", {
             detail: {
@@ -77,89 +85,51 @@ export default defineUnlistedScript(() => {
 
     async function startMock(config: StartMockConfig) {
       const { device, mediaUrl, debugMode } = config;
+      const { MediaMock: instance, devices } = mediaWindow.MediaMock;
 
-      console.log("Starting MediaMock in main world with device:", device);
-
-      if (!mediaWindow.MediaMockDevices[device as keyof typeof devices]) {
+      if (!devices[device]) {
         throw new Error(`Unknown device: ${device}`);
       }
 
-      let mockInstance = mediaWindow.MediaMock;
-
+      let mockInstance = instance;
       if (debugMode) {
         mockInstance = mockInstance.enableDebugMode();
       }
 
-      // Mock the device with configuration
-      const deviceConfig =
-        mediaWindow.MediaMockDevices[device as keyof typeof devices];
-      mockInstance.mock(deviceConfig);
-      console.log("MediaMock.mock() called with device:", device);
-      console.log("Device config:", deviceConfig);
+      mockInstance.mock(devices[device]);
 
-      // Set media URL if provided
       if (mediaUrl) {
         await mockInstance.setMediaURL(mediaUrl);
-        console.log("MediaMock.setMediaURL() called with:", mediaUrl);
       }
 
-      // Mark as active
       mediaWindow.MediaMockActive = true;
 
-      // Test that mocking is working
-      const testDevices = await navigator.mediaDevices.enumerateDevices();
-      console.log("Mocked devices after mock():", testDevices);
-
-      // Dispatch custom event to notify the page
       window.dispatchEvent(
         new CustomEvent("mediamock:started", {
           detail: { device, mediaUrl, debugMode },
         }),
       );
 
-      console.log("MediaMock started with device:", device);
       return { success: true, status: "started" };
     }
 
     async function stopMock() {
-      if (mediaWindow.MediaMock) {
-        mediaWindow.MediaMock.unmock();
-        mediaWindow.MediaMockActive = false;
-
-        // Dispatch custom event to notify the page
-        window.dispatchEvent(new CustomEvent("mediamock:stopped"));
-
-        console.log("MediaMock stopped");
-      }
+      mediaWindow.MediaMock.MediaMock.unmock();
+      mediaWindow.MediaMockActive = false;
+      window.dispatchEvent(new CustomEvent("mediamock:stopped"));
       return { success: true, status: "stopped" };
     }
 
     async function testCamera() {
-      console.log("Testing camera access in main world...");
-
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            width: { ideal: 640 },
-            height: { ideal: 480 },
-          },
+          video: { width: { ideal: 640 }, height: { ideal: 480 } },
         });
 
-        console.log("Camera access successful:", {
-          tracks: stream.getTracks().length,
-          active: stream.active,
-          settings: stream.getVideoTracks()[0]?.getSettings(),
-        });
-
-        // Stop the stream after testing
         stream.getTracks().forEach((track) => track.stop());
-
-        // Show a brief visual indicator
         showTestResult(true);
-
         return { success: true, status: "testing" };
       } catch (error) {
-        console.error("Camera test failed:", error);
         showTestResult(false, (error as Error).message);
         return { success: false, error: (error as Error).message };
       }
@@ -189,6 +159,6 @@ export default defineUnlistedScript(() => {
       setTimeout(() => overlay.remove(), 3000);
     }
   } catch (error) {
-    console.error("Failed to load MediaMock in main world:", error);
+    console.error("Failed to initialize MediaMock in main world:", error);
   }
 });

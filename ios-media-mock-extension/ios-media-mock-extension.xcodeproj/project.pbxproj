@@ -1,0 +1,792 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		ECF157562F8BB0B200325821 /* ios-media-mock-extension Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = ECF157552F8BB0B200325821 /* ios-media-mock-extension Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ECF157402F8BB0B200325821 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ECF1571A2F8BB0B000325821 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ECF157212F8BB0B000325821;
+			remoteInfo = "ios-media-mock-extension";
+		};
+		ECF1574A2F8BB0B200325821 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ECF1571A2F8BB0B000325821 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ECF157212F8BB0B000325821;
+			remoteInfo = "ios-media-mock-extension";
+		};
+		ECF157572F8BB0B200325821 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ECF1571A2F8BB0B000325821 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ECF157542F8BB0B200325821;
+			remoteInfo = "ios-media-mock-extension Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ECF157742F8BB0B200325821 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				ECF157562F8BB0B200325821 /* ios-media-mock-extension Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		ECF157222F8BB0B000325821 /* ios-media-mock-extension.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-media-mock-extension.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECF1573F2F8BB0B200325821 /* ios-media-mock-extensionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-media-mock-extensionTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECF157492F8BB0B200325821 /* ios-media-mock-extensionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ios-media-mock-extensionUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECF157552F8BB0B200325821 /* ios-media-mock-extension Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "ios-media-mock-extension Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		ECF1576F2F8BB0B200325821 /* Exceptions for "ios-media-mock-extension" folder in "ios-media-mock-extension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = ECF157212F8BB0B000325821 /* ios-media-mock-extension */;
+		};
+		ECF157732F8BB0B200325821 /* Exceptions for "ios-media-mock-extension Extension" folder in "ios-media-mock-extension Extension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = ECF157542F8BB0B200325821 /* ios-media-mock-extension Extension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		ECF157242F8BB0B000325821 /* ios-media-mock-extension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ECF1576F2F8BB0B200325821 /* Exceptions for "ios-media-mock-extension" folder in "ios-media-mock-extension" target */,
+			);
+			path = "ios-media-mock-extension";
+			sourceTree = "<group>";
+		};
+		ECF157422F8BB0B200325821 /* ios-media-mock-extensionTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "ios-media-mock-extensionTests";
+			sourceTree = "<group>";
+		};
+		ECF1574C2F8BB0B200325821 /* ios-media-mock-extensionUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "ios-media-mock-extensionUITests";
+			sourceTree = "<group>";
+		};
+		ECF157592F8BB0B200325821 /* ios-media-mock-extension Extension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ECF157732F8BB0B200325821 /* Exceptions for "ios-media-mock-extension Extension" folder in "ios-media-mock-extension Extension" target */,
+			);
+			path = "ios-media-mock-extension Extension";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ECF1571F2F8BB0B000325821 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF1573C2F8BB0B200325821 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF157462F8BB0B200325821 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF157522F8BB0B200325821 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ECF157192F8BB0B000325821 = {
+			isa = PBXGroup;
+			children = (
+				ECF157242F8BB0B000325821 /* ios-media-mock-extension */,
+				ECF157422F8BB0B200325821 /* ios-media-mock-extensionTests */,
+				ECF1574C2F8BB0B200325821 /* ios-media-mock-extensionUITests */,
+				ECF157592F8BB0B200325821 /* ios-media-mock-extension Extension */,
+				ECF157232F8BB0B000325821 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ECF157232F8BB0B000325821 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ECF157222F8BB0B000325821 /* ios-media-mock-extension.app */,
+				ECF1573F2F8BB0B200325821 /* ios-media-mock-extensionTests.xctest */,
+				ECF157492F8BB0B200325821 /* ios-media-mock-extensionUITests.xctest */,
+				ECF157552F8BB0B200325821 /* ios-media-mock-extension Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ECF157212F8BB0B000325821 /* ios-media-mock-extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ECF157752F8BB0B200325821 /* Build configuration list for PBXNativeTarget "ios-media-mock-extension" */;
+			buildPhases = (
+				ECF1571E2F8BB0B000325821 /* Sources */,
+				ECF1571F2F8BB0B000325821 /* Frameworks */,
+				ECF157202F8BB0B000325821 /* Resources */,
+				ECF157742F8BB0B200325821 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ECF157582F8BB0B200325821 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				ECF157242F8BB0B000325821 /* ios-media-mock-extension */,
+			);
+			name = "ios-media-mock-extension";
+			packageProductDependencies = (
+			);
+			productName = "ios-media-mock-extension";
+			productReference = ECF157222F8BB0B000325821 /* ios-media-mock-extension.app */;
+			productType = "com.apple.product-type.application";
+		};
+		ECF1573E2F8BB0B200325821 /* ios-media-mock-extensionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ECF1577A2F8BB0B200325821 /* Build configuration list for PBXNativeTarget "ios-media-mock-extensionTests" */;
+			buildPhases = (
+				ECF1573B2F8BB0B200325821 /* Sources */,
+				ECF1573C2F8BB0B200325821 /* Frameworks */,
+				ECF1573D2F8BB0B200325821 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ECF157412F8BB0B200325821 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				ECF157422F8BB0B200325821 /* ios-media-mock-extensionTests */,
+			);
+			name = "ios-media-mock-extensionTests";
+			packageProductDependencies = (
+			);
+			productName = "ios-media-mock-extensionTests";
+			productReference = ECF1573F2F8BB0B200325821 /* ios-media-mock-extensionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		ECF157482F8BB0B200325821 /* ios-media-mock-extensionUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ECF1577D2F8BB0B200325821 /* Build configuration list for PBXNativeTarget "ios-media-mock-extensionUITests" */;
+			buildPhases = (
+				ECF157452F8BB0B200325821 /* Sources */,
+				ECF157462F8BB0B200325821 /* Frameworks */,
+				ECF157472F8BB0B200325821 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ECF1574B2F8BB0B200325821 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				ECF1574C2F8BB0B200325821 /* ios-media-mock-extensionUITests */,
+			);
+			name = "ios-media-mock-extensionUITests";
+			packageProductDependencies = (
+			);
+			productName = "ios-media-mock-extensionUITests";
+			productReference = ECF157492F8BB0B200325821 /* ios-media-mock-extensionUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		ECF157542F8BB0B200325821 /* ios-media-mock-extension Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ECF157702F8BB0B200325821 /* Build configuration list for PBXNativeTarget "ios-media-mock-extension Extension" */;
+			buildPhases = (
+				ECF157512F8BB0B200325821 /* Sources */,
+				ECF157522F8BB0B200325821 /* Frameworks */,
+				ECF157532F8BB0B200325821 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				ECF157592F8BB0B200325821 /* ios-media-mock-extension Extension */,
+			);
+			name = "ios-media-mock-extension Extension";
+			packageProductDependencies = (
+			);
+			productName = "ios-media-mock-extension Extension";
+			productReference = ECF157552F8BB0B200325821 /* ios-media-mock-extension Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ECF1571A2F8BB0B000325821 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2640;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					ECF157212F8BB0B000325821 = {
+						CreatedOnToolsVersion = 26.4;
+					};
+					ECF1573E2F8BB0B200325821 = {
+						CreatedOnToolsVersion = 26.4;
+						TestTargetID = ECF157212F8BB0B000325821;
+					};
+					ECF157482F8BB0B200325821 = {
+						CreatedOnToolsVersion = 26.4;
+						TestTargetID = ECF157212F8BB0B000325821;
+					};
+					ECF157542F8BB0B200325821 = {
+						CreatedOnToolsVersion = 26.4;
+					};
+				};
+			};
+			buildConfigurationList = ECF1571D2F8BB0B000325821 /* Build configuration list for PBXProject "ios-media-mock-extension" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = ECF157192F8BB0B000325821;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = ECF157232F8BB0B000325821 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ECF157212F8BB0B000325821 /* ios-media-mock-extension */,
+				ECF1573E2F8BB0B200325821 /* ios-media-mock-extensionTests */,
+				ECF157482F8BB0B200325821 /* ios-media-mock-extensionUITests */,
+				ECF157542F8BB0B200325821 /* ios-media-mock-extension Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ECF157202F8BB0B000325821 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF1573D2F8BB0B200325821 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF157472F8BB0B200325821 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF157532F8BB0B200325821 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ECF1571E2F8BB0B000325821 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF1573B2F8BB0B200325821 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF157452F8BB0B200325821 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECF157512F8BB0B200325821 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ECF157412F8BB0B200325821 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ECF157212F8BB0B000325821 /* ios-media-mock-extension */;
+			targetProxy = ECF157402F8BB0B200325821 /* PBXContainerItemProxy */;
+		};
+		ECF1574B2F8BB0B200325821 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ECF157212F8BB0B000325821 /* ios-media-mock-extension */;
+			targetProxy = ECF1574A2F8BB0B200325821 /* PBXContainerItemProxy */;
+		};
+		ECF157582F8BB0B200325821 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ECF157542F8BB0B200325821 /* ios-media-mock-extension Extension */;
+			targetProxy = ECF157572F8BB0B200325821 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		ECF157712F8BB0B200325821 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ios-media-mock-extension Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "ios-media-mock-extension Extension";
+				INFOPLIST_KEY_CFBundleShortVersionString = "$(MARKETING_VERSION)";
+				INFOPLIST_KEY_CFBundleVersion = "$(CURRENT_PROJECT_VERSION)";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eatsjobs.ios-media-mock-extension.Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		ECF157722F8BB0B200325821 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ios-media-mock-extension Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "ios-media-mock-extension Extension";
+				INFOPLIST_KEY_CFBundleShortVersionString = "$(MARKETING_VERSION)";
+				INFOPLIST_KEY_CFBundleVersion = "$(CURRENT_PROJECT_VERSION)";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eatsjobs.ios-media-mock-extension.Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		ECF157762F8BB0B200325821 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ios-media-mock-extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "ios-media-mock-extension";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eatsjobs.ios-media-mock-extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		ECF157772F8BB0B200325821 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ios-media-mock-extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "ios-media-mock-extension";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eatsjobs.ios-media-mock-extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		ECF157782F8BB0B200325821 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		ECF157792F8BB0B200325821 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		ECF1577B2F8BB0B200325821 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "eatsjobs.ios-media-mock-extensionTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ios-media-mock-extension.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ios-media-mock-extension";
+			};
+			name = Debug;
+		};
+		ECF1577C2F8BB0B200325821 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "eatsjobs.ios-media-mock-extensionTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ios-media-mock-extension.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ios-media-mock-extension";
+			};
+			name = Release;
+		};
+		ECF1577E2F8BB0B200325821 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "eatsjobs.ios-media-mock-extensionUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "ios-media-mock-extension";
+			};
+			name = Debug;
+		};
+		ECF1577F2F8BB0B200325821 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5AHYTS5L53;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "eatsjobs.ios-media-mock-extensionUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "ios-media-mock-extension";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ECF1571D2F8BB0B000325821 /* Build configuration list for PBXProject "ios-media-mock-extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECF157782F8BB0B200325821 /* Debug */,
+				ECF157792F8BB0B200325821 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ECF157702F8BB0B200325821 /* Build configuration list for PBXNativeTarget "ios-media-mock-extension Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECF157712F8BB0B200325821 /* Debug */,
+				ECF157722F8BB0B200325821 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ECF157752F8BB0B200325821 /* Build configuration list for PBXNativeTarget "ios-media-mock-extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECF157762F8BB0B200325821 /* Debug */,
+				ECF157772F8BB0B200325821 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ECF1577A2F8BB0B200325821 /* Build configuration list for PBXNativeTarget "ios-media-mock-extensionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECF1577B2F8BB0B200325821 /* Debug */,
+				ECF1577C2F8BB0B200325821 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ECF1577D2F8BB0B200325821 /* Build configuration list for PBXNativeTarget "ios-media-mock-extensionUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECF1577E2F8BB0B200325821 /* Debug */,
+				ECF1577F2F8BB0B200325821 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ECF1571A2F8BB0B000325821 /* Project object */;
+}

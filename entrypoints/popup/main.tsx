@@ -22,6 +22,11 @@ interface MockState {
   isDragging: boolean;
 }
 
+type StoredPopupSettings = Partial<{
+  mediaUrl: string;
+  uploadedFileName: string;
+}>;
+
 // User agent detection for smart device selection
 function detectDeviceFromUserAgent(userAgent: string): keyof typeof devices {
   const ua = userAgent.toLowerCase();
@@ -64,18 +69,18 @@ function Popup() {
     try {
       // Get current tab and detect device from user agent
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      
+
       if (tab.id) {
         // Execute script to get user agent from the tab
         const results = await chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: () => navigator.userAgent
         });
-        
+
         if (results && results[0] && results[0].result) {
           const userAgent = results[0].result;
           const detectedDevice = detectDeviceFromUserAgent(userAgent);
-          
+
           setState(prev => ({
             ...prev,
             device: detectedDevice,
@@ -87,7 +92,21 @@ function Popup() {
       console.error('Failed to detect device from user agent:', error);
       // Fall back to first device if detection fails
     }
-    
+
+    // Restore persisted media URL
+    chrome.storage.local.get(['mediaUrl', 'uploadedFileName'], (result) => {
+      const stored = result as StoredPopupSettings;
+      const mediaUrl = stored.mediaUrl;
+      const uploadedFileName = stored.uploadedFileName || '';
+      if (mediaUrl) {
+        setState(prev => ({
+          ...prev,
+          mediaUrl,
+          uploadedFileName,
+        }));
+      }
+    });
+
     // Check mock status regardless
     checkStatus();
   };
@@ -130,6 +149,11 @@ function Popup() {
 
       if (response?.success) {
         setState(prev => ({ ...prev, isActive: true }));
+        chrome.storage.local.set({
+          mockActive: true,
+          mockDevice: state.device,
+          mockDebugMode: state.debugMode,
+        });
         showMessage('MediaMock started successfully', 'success');
       } else {
         throw new Error(response?.error || 'Failed to start mock');
@@ -150,6 +174,7 @@ function Popup() {
       
       if (response?.success) {
         setState(prev => ({ ...prev, isActive: false }));
+        chrome.storage.local.set({ mockActive: false });
         showMessage('MediaMock stopped', 'success');
       } else {
         throw new Error(response?.error || 'Failed to stop mock');
@@ -209,7 +234,8 @@ function Popup() {
       uploadedFile: null,
       uploadedFileName: ''
     }));
-    
+    chrome.storage.local.remove(['mediaUrl', 'uploadedFileName']);
+
     // Clear the file input
     const fileInput = document.getElementById('file-upload') as HTMLInputElement;
     if (fileInput) fileInput.value = '';
@@ -235,7 +261,7 @@ function Popup() {
 
     // Read file and convert to data URL
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const dataUrl = e.target?.result as string;
       setState(prev => ({
         ...prev,
@@ -243,6 +269,10 @@ function Popup() {
         uploadedFile: file,
         uploadedFileName: file.name
       }));
+      chrome.storage.local.set({ mediaUrl: dataUrl, uploadedFileName: file.name });
+      if (state.isActive) {
+        await sendMessageToActiveTab({ action: 'SET_MEDIA_URL', mediaUrl: dataUrl });
+      }
       showMessage(`Uploaded ${file.name} successfully`, 'success');
     };
     
@@ -276,8 +306,6 @@ function Popup() {
     e.stopPropagation();
     setState(prev => ({ ...prev, isDragging: false }));
 
-    if (state.isActive) return;
-
     const files = Array.from(e.dataTransfer.files);
     if (files.length === 0) return;
 
@@ -307,7 +335,17 @@ function Popup() {
         isDragging={state.isDragging}
         isActive={state.isActive}
         onFileUpload={handleFileUpload}
-        onMediaUrlChange={(url) => setState(prev => ({ ...prev, mediaUrl: url }))}
+        onMediaUrlChange={async (url) => {
+          setState(prev => ({ ...prev, mediaUrl: url }));
+          if (url) {
+            chrome.storage.local.set({ mediaUrl: url, uploadedFileName: '' });
+            if (state.isActive) {
+              await sendMessageToActiveTab({ action: 'SET_MEDIA_URL', mediaUrl: url });
+            }
+          } else {
+            chrome.storage.local.remove(['mediaUrl', 'uploadedFileName']);
+          }
+        }}
         onClearFile={clearUploadedFile}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}

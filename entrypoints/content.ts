@@ -2,12 +2,16 @@
 
 export default defineContentScript({
   matches: ['<all_urls>'],
+  runAt: 'document_start',
   main() {
     console.log('MediaMock content script loaded');
-    
+
+    // Start reading storage immediately, in parallel with script injection
+    const autostartPromise = chrome.storage.local.get(['mockActive', 'mockDevice', 'mediaUrl', 'mockDebugMode']);
+
     // Inject MediaMock into the main world using external script
     injectMediaMockScript();
-    
+
     // Add global flag to indicate extension is ready in isolated world
     (window as any).MediaMockExtensionLoaded = true;
 
@@ -21,6 +25,10 @@ export default defineContentScript({
               sendResponse({ success: true, status: 'started' });
               break;
               
+            case 'SET_MEDIA_URL':
+              await executeCommandInMainWorld('SET_MEDIA_URL', { mediaUrl: message.mediaUrl });
+              sendResponse({ success: true, status: 'media_updated' });
+              break;
             case 'STOP_MOCK':
               handleStopMock();
               sendResponse({ success: true, status: 'stopped' });
@@ -50,18 +58,36 @@ export default defineContentScript({
     });
 
     function injectMediaMockScript() {
-      // Inject external script into main world
-      const script = document.createElement('script');
-      script.src = chrome.runtime.getURL('inject-mediamock.js');
-      script.type = 'module';
-      script.onload = function() {
-        console.log('MediaMock injection script loaded');
+      // Inject UMD bundle first (sets window.MediaMock), then our script
+      const umd = document.createElement('script');
+      umd.src = chrome.runtime.getURL('media-mock.umd.min.js');
+      umd.onload = function() {
+        const script = document.createElement('script');
+        script.src = chrome.runtime.getURL('inject-mediamock.js');
+        script.onerror = function() {
+          console.error('Failed to load MediaMock injection script');
+        };
+        (document.head || document.documentElement).appendChild(script);
       };
-      script.onerror = function() {
-        console.error('Failed to load MediaMock injection script');
+      umd.onerror = function() {
+        console.error('Failed to load MediaMock UMD bundle');
       };
-      (document.head || document.documentElement).appendChild(script);
+      (document.head || document.documentElement).appendChild(umd);
     }
+
+    // Auto-restart mock on page load if it was previously active.
+    // autostartPromise is already in-flight so this await is near-instant.
+    window.addEventListener('mediamock:ready', async () => {
+      const result = await autostartPromise;
+      if (result.mockActive) {
+        console.log('MediaMock: auto-restarting mock after page load');
+        await executeCommandInMainWorld('START_MOCK', {
+          device: result.mockDevice,
+          mediaUrl: result.mediaUrl || '',
+          debugMode: result.mockDebugMode || false,
+        });
+      }
+    });
 
     async function executeCommandInMainWorld(command: string, config?: any) {
       return new Promise((resolve) => {
