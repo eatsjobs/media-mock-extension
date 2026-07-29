@@ -3,6 +3,7 @@ export { Header } from './Header';
 export { StatusIndicator } from './StatusIndicator';
 export { DeviceSelector } from './DeviceSelector';
 export { MediaSourceUpload } from './MediaSourceUpload';
+export { CanvasScaleControl } from './CanvasScaleControl';
 export { ActionButtons } from './ActionButtons';
 export { Message } from './Message';
 export { VersionInfo } from './VersionInfo';

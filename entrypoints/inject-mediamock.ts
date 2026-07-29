@@ -50,6 +50,10 @@ export default defineUnlistedScript(() => {
             await mediaWindow.MediaMock.MediaMock.setMediaURL(config.mediaUrl);
             result = { success: true, status: "media_updated" };
             break;
+          case "SET_CANVAS_SCALE_FACTOR":
+            mediaWindow.MediaMock.MediaMock.setCanvasScaleFactor(config.scaleFactor);
+            result = { success: true, status: "canvas_scale_updated" };
+            break;
           case "GET_STATUS":
             result = {
               success: true,
@@ -81,10 +85,11 @@ export default defineUnlistedScript(() => {
       device: string;
       mediaUrl: string;
       debugMode: boolean;
+      canvasScaleFactor?: number;
     }
 
     async function startMock(config: StartMockConfig) {
-      const { device, mediaUrl, debugMode } = config;
+      const { device, mediaUrl, debugMode, canvasScaleFactor } = config;
       const { MediaMock: instance, devices } = mediaWindow.MediaMock;
 
       if (!devices[device]) {
@@ -97,6 +102,10 @@ export default defineUnlistedScript(() => {
       }
 
       mockInstance.mock(devices[device]);
+
+      if (canvasScaleFactor !== undefined) {
+        mockInstance.setCanvasScaleFactor(canvasScaleFactor);
+      }
 
       if (mediaUrl) {
         await mockInstance.setMediaURL(mediaUrl);

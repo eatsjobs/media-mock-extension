@@ -7,7 +7,7 @@ export default defineContentScript({
     console.log('MediaMock content script loaded');
 
     // Start reading storage immediately, in parallel with script injection
-    const autostartPromise = chrome.storage.local.get(['mockActive', 'mockDevice', 'mediaUrl', 'mockDebugMode']);
+    const autostartPromise = chrome.storage.local.get(['mockActive', 'mockDevice', 'mediaUrl', 'mockDebugMode', 'canvasScaleFactor']);
 
     // Inject MediaMock into the main world using external script
     injectMediaMockScript();
@@ -28,6 +28,10 @@ export default defineContentScript({
             case 'SET_MEDIA_URL':
               await executeCommandInMainWorld('SET_MEDIA_URL', { mediaUrl: message.mediaUrl });
               sendResponse({ success: true, status: 'media_updated' });
+              break;
+            case 'SET_CANVAS_SCALE_FACTOR':
+              await executeCommandInMainWorld('SET_CANVAS_SCALE_FACTOR', { scaleFactor: message.scaleFactor });
+              sendResponse({ success: true, status: 'canvas_scale_updated' });
               break;
             case 'STOP_MOCK':
               handleStopMock();
@@ -85,6 +89,7 @@ export default defineContentScript({
           device: result.mockDevice,
           mediaUrl: result.mediaUrl || '',
           debugMode: result.mockDebugMode || false,
+          canvasScaleFactor: result.canvasScaleFactor,
         });
       }
     });
@@ -121,6 +126,7 @@ export default defineContentScript({
       device: string;
       mediaUrl: string;
       debugMode: boolean;
+      canvasScaleFactor?: number;
     }
 
     async function handleStartMock(config: StartMockConfig) {

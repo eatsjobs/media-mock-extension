@@ -537,6 +537,68 @@ body {
   transform: scale(1.1);
 }
 
+.range-control {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.range-slider {
+  flex: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 0.375rem;
+  border-radius: 0.1875rem;
+  background: rgba(46, 193, 206, 0.2);
+  accent-color: #2ec1ce;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.range-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: #2ec1ce;
+  box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.range-slider::-moz-range-thumb {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: #2ec1ce;
+  border: none;
+  box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.range-slider:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.range-value {
+  min-width: 2.75rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--accent-secondary);
+  background: var(--version-value-bg);
+  border: 0.0625rem solid var(--version-value-border);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+}
+
 .device-info {
   background: var(--bg-device-info);
   border: 0.0625rem solid var(--border-secondary);

@@ -1,15 +1,18 @@
 import { devices } from '@eatsjobs/media-mock';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { 
-  Header, 
-  Message, 
-  StatusIndicator, 
-  DeviceSelector, 
-  MediaSourceUpload, 
+import {
+  Header,
+  Message,
+  StatusIndicator,
+  DeviceSelector,
+  MediaSourceUpload,
+  CanvasScaleControl,
   ActionButtons,
-  VersionInfo 
+  VersionInfo
 } from './components';
+
+const DEFAULT_CANVAS_SCALE_FACTOR = 1;
 
 interface MockState {
   isActive: boolean;
@@ -20,11 +23,13 @@ interface MockState {
   uploadedFile: File | null;
   uploadedFileName: string;
   isDragging: boolean;
+  canvasScaleFactor: number;
 }
 
 type StoredPopupSettings = Partial<{
   mediaUrl: string;
   uploadedFileName: string;
+  canvasScaleFactor: number;
 }>;
 
 // User agent detection for smart device selection
@@ -54,7 +59,8 @@ function Popup() {
     autoDetected: false,
     uploadedFile: null,
     uploadedFileName: '',
-    isDragging: false
+    isDragging: false,
+    canvasScaleFactor: DEFAULT_CANVAS_SCALE_FACTOR
   });
   const [loading, setLoading] = useState(false);
   const [loadingAction, setLoadingAction] = useState('');
@@ -93,8 +99,8 @@ function Popup() {
       // Fall back to first device if detection fails
     }
 
-    // Restore persisted media URL
-    chrome.storage.local.get(['mediaUrl', 'uploadedFileName'], (result) => {
+    // Restore persisted media URL and canvas scale factor
+    chrome.storage.local.get(['mediaUrl', 'uploadedFileName', 'canvasScaleFactor'], (result) => {
       const stored = result as StoredPopupSettings;
       const mediaUrl = stored.mediaUrl;
       const uploadedFileName = stored.uploadedFileName || '';
@@ -104,6 +110,9 @@ function Popup() {
           mediaUrl,
           uploadedFileName,
         }));
+      }
+      if (stored.canvasScaleFactor !== undefined) {
+        setState(prev => ({ ...prev, canvasScaleFactor: stored.canvasScaleFactor! }));
       }
     });
 
@@ -143,7 +152,8 @@ function Popup() {
         config: {
           device: state.device,
           mediaUrl: state.mediaUrl,
-          debugMode: state.debugMode
+          debugMode: state.debugMode,
+          canvasScaleFactor: state.canvasScaleFactor
         }
       });
 
@@ -219,6 +229,11 @@ function Popup() {
       device: deviceName,
       autoDetected: false // Clear auto-detected flag when user manually changes
     }));
+  };
+
+  const handleCanvasScaleFactorChange = (value: number) => {
+    setState(prev => ({ ...prev, canvasScaleFactor: value }));
+    chrome.storage.local.set({ canvasScaleFactor: value });
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -352,7 +367,13 @@ function Popup() {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       />
-      
+
+      <CanvasScaleControl
+        canvasScaleFactor={state.canvasScaleFactor}
+        isActive={state.isActive}
+        onCanvasScaleFactorChange={handleCanvasScaleFactorChange}
+      />
+
       <ActionButtons
         isActive={state.isActive}
         loading={loading}
