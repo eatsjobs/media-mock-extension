@@ -1,4 +1,5 @@
 import React from 'react';
+import { CanvasScaleControl } from './CanvasScaleControl';
 
 interface MediaSourceUploadProps {
   mediaUrl: string;
@@ -6,6 +7,7 @@ interface MediaSourceUploadProps {
   uploadedFileName: string;
   isDragging: boolean;
   isActive: boolean;
+  canvasScaleFactor?: number;
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onMediaUrlChange: (url: string) => void;
   onClearFile: () => void;
@@ -13,6 +15,7 @@ interface MediaSourceUploadProps {
   onDragLeave: (e: React.DragEvent) => void;
   onDragOver: (e: React.DragEvent) => void;
   onDrop: (e: React.DragEvent) => void;
+  onCanvasScaleFactorChange?: (value: number) => void;
 }
 
 export const MediaSourceUpload: React.FC<MediaSourceUploadProps> = ({
@@ -21,6 +24,7 @@ export const MediaSourceUpload: React.FC<MediaSourceUploadProps> = ({
   uploadedFileName,
   isDragging,
   isActive,
+  canvasScaleFactor,
   onFileUpload,
   onMediaUrlChange,
   onClearFile,
@@ -28,6 +32,7 @@ export const MediaSourceUpload: React.FC<MediaSourceUploadProps> = ({
   onDragLeave,
   onDragOver,
   onDrop,
+  onCanvasScaleFactorChange,
 }) => {
   return (
     <div className="section">
@@ -85,6 +90,14 @@ export const MediaSourceUpload: React.FC<MediaSourceUploadProps> = ({
         onChange={(e) => onMediaUrlChange(e.target.value)}
         disabled={isActive || !!uploadedFile}
       />
+
+      {canvasScaleFactor !== undefined && onCanvasScaleFactorChange && (
+        <CanvasScaleControl
+          canvasScaleFactor={canvasScaleFactor}
+          isActive={isActive}
+          onCanvasScaleFactorChange={onCanvasScaleFactorChange}
+        />
+      )}
     </div>
   );
 };

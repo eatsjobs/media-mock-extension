@@ -12,8 +12,8 @@ export const CanvasScaleControl: React.FC<CanvasScaleControlProps> = ({
   onCanvasScaleFactorChange,
 }) => {
   return (
-    <div className="section">
-      <div className="section-title">Canvas Scale Factor</div>
+    <div className="canvas-scale-control">
+      <div className="canvas-scale-label">Canvas Scale Factor</div>
 
       <div className="range-control">
         <input

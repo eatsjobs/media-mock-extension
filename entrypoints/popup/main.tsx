@@ -7,7 +7,6 @@ import {
   StatusIndicator,
   DeviceSelector,
   MediaSourceUpload,
-  CanvasScaleControl,
   ActionButtons,
   VersionInfo
 } from './components';
@@ -349,6 +348,7 @@ function Popup() {
         uploadedFileName={state.uploadedFileName}
         isDragging={state.isDragging}
         isActive={state.isActive}
+        canvasScaleFactor={state.canvasScaleFactor}
         onFileUpload={handleFileUpload}
         onMediaUrlChange={async (url) => {
           setState(prev => ({ ...prev, mediaUrl: url }));
@@ -366,11 +366,6 @@ function Popup() {
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-      />
-
-      <CanvasScaleControl
-        canvasScaleFactor={state.canvasScaleFactor}
-        isActive={state.isActive}
         onCanvasScaleFactorChange={handleCanvasScaleFactorChange}
       />
 

@@ -537,6 +537,19 @@ body {
   transform: scale(1.1);
 }
 
+.canvas-scale-control {
+  margin-top: 1rem;
+  padding-top: 0.875rem;
+  border-top: 0.0625rem solid var(--border-secondary);
+}
+
+.canvas-scale-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
 .range-control {
   display: flex;
   align-items: center;
