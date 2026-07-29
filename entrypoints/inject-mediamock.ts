@@ -47,7 +47,7 @@ export default defineUnlistedScript(() => {
             result = await testCamera();
             break;
           case "SET_MEDIA_URL":
-            await mediaWindow.MediaMock.MediaMock.setMediaURL(config.mediaUrl);
+            await mediaWindow.MediaMock.MediaMock.setSource(config.mediaUrl);
             result = { success: true, status: "media_updated" };
             break;
           case "SET_CANVAS_SCALE_FACTOR":
@@ -108,7 +108,7 @@ export default defineUnlistedScript(() => {
       }
 
       if (mediaUrl) {
-        await mockInstance.setMediaURL(mediaUrl);
+        await mockInstance.setSource(mediaUrl);
       }
 
       mediaWindow.MediaMockActive = true;
