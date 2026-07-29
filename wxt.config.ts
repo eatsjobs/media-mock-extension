@@ -106,7 +106,7 @@ export default defineConfig({
     },
   },
   // Ensure builds work across different environments
-  webExt: {
-    enabled: false
+  runner: {
+    disabled: true
   }
 });
