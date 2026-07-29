@@ -39,6 +39,8 @@ function executeCommand(command: string, config?: any): Promise<any> {
   });
 }
 
+const DEFAULT_CANVAS_SCALE_FACTOR = 1;
+
 interface MockState {
   isActive: boolean;
   device: string;
@@ -48,6 +50,7 @@ interface MockState {
   uploadedFile: File | null;
   uploadedFileName: string;
   isDragging: boolean;
+  canvasScaleFactor: number;
 }
 
 type StoredMockSettings = Partial<{
@@ -56,6 +59,7 @@ type StoredMockSettings = Partial<{
   mediaUrl: string;
   uploadedFileName: string;
   mockDebugMode: boolean;
+  canvasScaleFactor: number;
 }>;
 
 // All structural styles are inline so page CSS can never override them
@@ -168,6 +172,7 @@ function OverlayApp() {
     uploadedFile: null,
     uploadedFileName: '',
     isDragging: false,
+    canvasScaleFactor: DEFAULT_CANVAS_SCALE_FACTOR,
   });
   const [loading, setLoading] = useState(false);
   const [loadingAction, setLoadingAction] = useState('');
@@ -181,7 +186,7 @@ function OverlayApp() {
   }, []);
 
   useEffect(() => {
-    chrome.storage.local.get(['mockActive', 'mockDevice', 'mediaUrl', 'uploadedFileName', 'mockDebugMode'], (result) => {
+    chrome.storage.local.get(['mockActive', 'mockDevice', 'mediaUrl', 'uploadedFileName', 'mockDebugMode', 'canvasScaleFactor'], (result) => {
       const stored = result as StoredMockSettings;
       setState(prev => ({
         ...prev,
@@ -189,6 +194,7 @@ function OverlayApp() {
         ...(stored.mediaUrl ? { mediaUrl: stored.mediaUrl } : {}),
         ...(stored.uploadedFileName ? { uploadedFileName: stored.uploadedFileName } : {}),
         ...(typeof stored.mockDebugMode === 'boolean' ? { debugMode: stored.mockDebugMode } : {}),
+        ...(stored.canvasScaleFactor !== undefined ? { canvasScaleFactor: stored.canvasScaleFactor } : {}),
       }));
     });
 
@@ -210,6 +216,7 @@ function OverlayApp() {
         device: state.device,
         mediaUrl: state.mediaUrl,
         debugMode: state.debugMode,
+        canvasScaleFactor: state.canvasScaleFactor,
       });
       if (result && result.success) {
         setState(prev => ({ ...prev, isActive: true }));
@@ -297,6 +304,11 @@ function OverlayApp() {
     if (fileInput) fileInput.value = '';
   };
 
+  const handleCanvasScaleFactorChange = (value: number) => {
+    setState(prev => ({ ...prev, canvasScaleFactor: value }));
+    chrome.storage.local.set({ canvasScaleFactor: value });
+  };
+
   const handleDragEnter = (e: React.DragEvent) => { e.preventDefault(); e.stopPropagation(); setState(prev => ({ ...prev, isDragging: true })); };
   const handleDragLeave = (e: React.DragEvent) => { e.preventDefault(); e.stopPropagation(); setState(prev => ({ ...prev, isDragging: false })); };
   const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); e.stopPropagation(); };
@@ -344,6 +356,7 @@ function OverlayApp() {
               uploadedFileName={state.uploadedFileName}
               isDragging={state.isDragging}
               isActive={state.isActive}
+              canvasScaleFactor={state.canvasScaleFactor}
               onFileUpload={handleFileUpload}
               onMediaUrlChange={async (url) => {
                 setState(prev => ({ ...prev, mediaUrl: url }));
@@ -359,6 +372,7 @@ function OverlayApp() {
               onDragLeave={handleDragLeave}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
+              onCanvasScaleFactorChange={handleCanvasScaleFactorChange}
             />
             <ActionButtons
               isActive={state.isActive}
