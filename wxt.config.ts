@@ -12,7 +12,7 @@ import {
 import { join, resolve } from 'path';
 
 // Copy UMD bundle at config load time, before WXT processes publicDir
-const umdSrc = resolve('node_modules/@eatsjobs/media-mock/dist/media-mock.umd.min.js');
+const umdSrc = resolve('node_modules/@eatsjobs/media-mock/dist/main.umd.js');
 const publicDir = resolve('public');
 if (!existsSync(publicDir)) mkdirSync(publicDir, { recursive: true });
 copyFileSync(umdSrc, resolve(publicDir, 'media-mock.umd.min.js'));
