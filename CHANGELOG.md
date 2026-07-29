@@ -1,5 +1,23 @@
 # @eatsjobs/media-mock-browser-extension
 
+## 1.2.0
+
+### Minor Changes
+
+- f4eb739: Add a Canvas Scale Factor control to the popup, letting you adjust how much of the canvas the mocked image fills (0.1-1.0) before or after starting the mock.
+- 29bb676: Update `@eatsjobs/media-mock` to 2.0.0.
+
+  2.0.0 removes `setMediaURL()` in favor of `setSource()` — despite the upstream changelog claiming it "keeps working unchanged", the shipped package has no trace of it in either the compiled bundle or the type declarations. Updated both call sites in `inject-mediamock.ts` accordingly. `setCanvasScaleFactor()` and reading `settings` are unaffected and continue to work as before.
+
+### Patch Changes
+
+- 7faa4e8: Keep the Canvas Scale Factor slider enabled while the mock is active, in both the toolbar popup and the in-page overlay. Changing it now sends a live `SET_CANVAS_SCALE_FACTOR` update to the running mock, the same way the media URL can already be changed live.
+- bfbae66: Fix a `manifest.exclude` meta tag in the popup entrypoint that was accidentally excluding the popup from every browser target (Chrome, Firefox, and Safari), causing built extensions to ship without a popup UI.
+- 0ee164e: Move the Canvas Scale Factor control into the Media Source section, directly below the image/video URL input, instead of a separate section.
+- 753ac32: Add Canvas Scale Factor state and control to the in-page overlay widget (`overlay.content.tsx`), matching the toolbar popup. Previously only the toolbar popup exposed this control.
+- 53c2094: Update `@eatsjobs/media-mock` dependency to 1.4.1.
+- 2069bed: Upgrade wxt from 0.20.26 to 0.21.2. Migrated the deprecated `runner: { disabled: true }` config to the new `webExt: { enabled: false }` option per the v0.21 upgrade guide.
+
 ## 1.1.1
 
 ### Patch Changes
