@@ -230,9 +230,12 @@ function Popup() {
     }));
   };
 
-  const handleCanvasScaleFactorChange = (value: number) => {
+  const handleCanvasScaleFactorChange = async (value: number) => {
     setState(prev => ({ ...prev, canvasScaleFactor: value }));
     chrome.storage.local.set({ canvasScaleFactor: value });
+    if (state.isActive) {
+      await sendMessageToActiveTab({ action: 'SET_CANVAS_SCALE_FACTOR', scaleFactor: value });
+    }
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

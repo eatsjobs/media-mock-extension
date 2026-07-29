@@ -304,9 +304,12 @@ function OverlayApp() {
     if (fileInput) fileInput.value = '';
   };
 
-  const handleCanvasScaleFactorChange = (value: number) => {
+  const handleCanvasScaleFactorChange = async (value: number) => {
     setState(prev => ({ ...prev, canvasScaleFactor: value }));
     chrome.storage.local.set({ canvasScaleFactor: value });
+    if (state.isActive) {
+      await executeCommand('SET_CANVAS_SCALE_FACTOR', { scaleFactor: value });
+    }
   };
 
   const handleDragEnter = (e: React.DragEvent) => { e.preventDefault(); e.stopPropagation(); setState(prev => ({ ...prev, isDragging: true })); };

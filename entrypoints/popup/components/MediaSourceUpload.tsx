@@ -94,7 +94,6 @@ export const MediaSourceUpload: React.FC<MediaSourceUploadProps> = ({
       {canvasScaleFactor !== undefined && onCanvasScaleFactorChange && (
         <CanvasScaleControl
           canvasScaleFactor={canvasScaleFactor}
-          isActive={isActive}
           onCanvasScaleFactorChange={onCanvasScaleFactorChange}
         />
       )}

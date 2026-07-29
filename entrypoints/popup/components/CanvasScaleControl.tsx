@@ -2,13 +2,11 @@ import React from 'react';
 
 interface CanvasScaleControlProps {
   canvasScaleFactor: number;
-  isActive: boolean;
   onCanvasScaleFactorChange: (value: number) => void;
 }
 
 export const CanvasScaleControl: React.FC<CanvasScaleControlProps> = ({
   canvasScaleFactor,
-  isActive,
   onCanvasScaleFactorChange,
 }) => {
   return (
@@ -23,7 +21,6 @@ export const CanvasScaleControl: React.FC<CanvasScaleControlProps> = ({
           max={1}
           step={0.05}
           value={canvasScaleFactor}
-          disabled={isActive}
           onChange={(e) => onCanvasScaleFactorChange(parseFloat(e.target.value))}
         />
         <span className="range-value">{canvasScaleFactor.toFixed(2)}</span>
