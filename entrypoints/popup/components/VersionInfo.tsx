@@ -1,7 +1,7 @@
 import React from 'react';
 import { getMediaMockVersion } from '../utils/getMediaMockVersion';
 
-const EXTENSION_VERSION = '1.2.0';
+const EXTENSION_VERSION = '1.2.1';
 const MEDIA_MOCK_VERSION = getMediaMockVersion();
 
 export const VersionInfo: React.FC = () => {
