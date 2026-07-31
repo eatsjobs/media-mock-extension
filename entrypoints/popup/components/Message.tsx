@@ -9,7 +9,7 @@ export const Message: React.FC<MessageProps> = ({ message, type }) => {
   if (!message) return null;
   
   return (
-    <div className={`message ${type}`}>
+    <div className={`mm-message mm-${type}`}>
       {message}
     </div>
   );

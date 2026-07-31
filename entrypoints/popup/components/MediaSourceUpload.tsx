@@ -35,11 +35,11 @@ export const MediaSourceUpload: React.FC<MediaSourceUploadProps> = ({
   onCanvasScaleFactorChange,
 }) => {
   return (
-    <div className="section">
-      <div className="section-title">Media Source</div>
-      
+    <div className="mm-section">
+      <div className="mm-section-title">Media Source</div>
+
       <div
-        className={`upload-section ${isDragging ? 'dragging' : ''}`}
+        className={`mm-upload-section ${isDragging ? 'mm-dragging' : ''}`}
         onDragEnter={onDragEnter}
         onDragLeave={onDragLeave}
         onDragOver={onDragOver}
@@ -51,29 +51,29 @@ export const MediaSourceUpload: React.FC<MediaSourceUploadProps> = ({
           accept="image/*,video/*"
           onChange={onFileUpload}
           disabled={isActive}
-          className="file-input"
+          className="mm-file-input"
         />
         <label
           htmlFor="file-upload"
-          className={`button button-upload ${isActive ? 'disabled' : ''} ${isDragging ? 'drag-active' : ''}`}
+          className={`mm-button mm-button-upload ${isActive ? 'mm-disabled' : ''} ${isDragging ? 'mm-drag-active' : ''}`}
         >
           {isDragging ? '📎 Drop file here' : '📁 Upload Local File or Drag & Drop'}
         </label>
       </div>
 
       {uploadedFile && (
-        <div className="uploaded-file-info">
-          <div className="file-details">
-            <span className="file-icon">
+        <div className="mm-uploaded-file-info">
+          <div className="mm-file-details">
+            <span className="mm-file-icon">
               {uploadedFile.type.startsWith('video/') ? '🎥' : '🖼️'}
             </span>
-            <span className="file-name">{uploadedFileName}</span>
-            <span className="file-size">
+            <span className="mm-file-name">{uploadedFileName}</span>
+            <span className="mm-file-size">
               ({(uploadedFile.size / 1024 / 1024).toFixed(1)} MB)
             </span>
           </div>
           <button
-            className="button button-small button-danger"
+            className="mm-button mm-button-small mm-button-danger"
             onClick={onClearFile}
             disabled={isActive}
           >
@@ -84,7 +84,7 @@ export const MediaSourceUpload: React.FC<MediaSourceUploadProps> = ({
 
       <input
         type="text"
-        className="input"
+        className="mm-input"
         placeholder="Or enter image/video URL"
         value={uploadedFile ? '' : mediaUrl}
         onChange={(e) => onMediaUrlChange(e.target.value)}

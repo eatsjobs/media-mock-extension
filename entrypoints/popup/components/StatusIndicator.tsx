@@ -6,7 +6,7 @@ interface StatusIndicatorProps {
 
 export const StatusIndicator: React.FC<StatusIndicatorProps> = ({ isActive }) => {
   return (
-    <div className={`status ${isActive ? 'active' : 'inactive'}`}>
+    <div className={`mm-status ${isActive ? 'mm-active' : 'mm-inactive'}`}>
       Status: {isActive ? 'Active' : 'Inactive'}
     </div>
   );

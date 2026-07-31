@@ -343,7 +343,7 @@ function OverlayApp() {
       <div style={S.drawer(isOpen)} role="dialog" aria-label="MediaMock controls">
         <div style={S.handle} onClick={() => setIsOpen(false)} />
         <div style={S.content} className="mm-popup">
-          <div className="popup-container">
+          <div className="mm-popup-container">
             <Header />
             <Message message={message} type={messageType} />
             <StatusIndicator isActive={state.isActive} />

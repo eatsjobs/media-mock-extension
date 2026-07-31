@@ -5,11 +5,11 @@ interface LoadingSpinnerProps {
 }
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'medium' }) => {
-  const sizeClass = size === 'small' ? 'spinner-small' : size === 'large' ? 'spinner-large' : 'spinner-medium';
-  
+  const sizeClass = size === 'small' ? 'mm-spinner-small' : size === 'large' ? 'mm-spinner-large' : 'mm-spinner-medium';
+
   return (
-    <div className={`loading-spinner ${sizeClass}`}>
-      <div className="spinner-circle"></div>
+    <div className={`mm-loading-spinner ${sizeClass}`}>
+      <div className="mm-spinner-circle"></div>
     </div>
   );
 };

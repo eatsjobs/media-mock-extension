@@ -24,8 +24,8 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
 }) => {
   return (
     <>
-      <div className="section">
-        <label className="checkbox-label">
+      <div className="mm-section">
+        <label className="mm-checkbox-label">
           <input
             type="checkbox"
             checked={debugMode}
@@ -36,9 +36,9 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
         </label>
       </div>
 
-      <div className="section buttons">
+      <div className="mm-section mm-buttons">
         <button
-          className="button button-primary"
+          className="mm-button mm-button-primary"
           onClick={onStart}
           disabled={loading || isActive}
         >
@@ -51,9 +51,9 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
             '▶ Start Mock'
           )}
         </button>
-        
+
         <button
-          className="button button-danger"
+          className="mm-button mm-button-danger"
           onClick={onStop}
           disabled={loading || !isActive}
         >
@@ -68,9 +68,9 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
         </button>
       </div>
 
-      <div className="section">
+      <div className="mm-section">
         <button
-          className="button button-secondary full-width"
+          className="mm-button mm-button-secondary mm-full-width"
           onClick={onTest}
           disabled={loading}
         >

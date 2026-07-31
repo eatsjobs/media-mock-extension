@@ -15,15 +15,15 @@ export const DeviceSelector: React.FC<DeviceSelectorProps> = ({
   onDeviceChange,
 }) => {
   return (
-    <div className="section">
-      <div className="section-title">
+    <div className="mm-section">
+      <div className="mm-section-title">
         Device Configuration
-        {autoDetected && <span className="auto-badge">Auto</span>}
+        {autoDetected && <span className="mm-auto-badge">Auto</span>}
       </div>
-      
-      <div className="device-selector">
+
+      <div className="mm-device-selector">
         <select
-          className="select device-select"
+          className="mm-select mm-device-select"
           value={selectedDevice}
           onChange={(e) => onDeviceChange(e.target.value)}
           disabled={isActive}
@@ -44,19 +44,19 @@ export const DeviceSelector: React.FC<DeviceSelectorProps> = ({
       </div>
       
       {selectedDevice && devices[selectedDevice as keyof typeof devices] && (
-        <div className="device-info">
-          <div className="device-detail">
-            <strong>📐 Resolutions:</strong> 
+        <div className="mm-device-info">
+          <div className="mm-device-detail">
+            <strong>📐 Resolutions:</strong>
             <ul>
               {devices[selectedDevice as keyof typeof devices].videoResolutions.map((resolution) => (
                 <li key={`${resolution.width}x${resolution.height}`}>{resolution.width}x{resolution.height}</li>
               ))}
             </ul>
           </div>
-          <div className="device-detail">
+          <div className="mm-device-detail">
             <strong>📷 Cameras:</strong> {devices[selectedDevice as keyof typeof devices].mediaDeviceInfo.filter(d => d.kind === 'videoinput').length} video input{devices[selectedDevice as keyof typeof devices].mediaDeviceInfo.filter(d => d.kind === 'videoinput').length !== 1 ? 's' : ''}
           </div>
-          <div className="device-detail">
+          <div className="mm-device-detail">
             <strong>📝 Type:</strong> {selectedDevice.includes('iPhone') || selectedDevice.includes('Samsung') ? 'Mobile Device' : 'Desktop Device'}
           </div>
         </div>

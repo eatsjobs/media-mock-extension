@@ -331,7 +331,7 @@ function Popup() {
   };
 
   return (
-    <div className="popup-container">
+    <div className="mm-popup-container">
       <Header />
       
       <Message message={message} type={messageType} />

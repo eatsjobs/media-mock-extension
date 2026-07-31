@@ -10,20 +10,20 @@ export const CanvasScaleControl: React.FC<CanvasScaleControlProps> = ({
   onCanvasScaleFactorChange,
 }) => {
   return (
-    <div className="canvas-scale-control">
-      <div className="canvas-scale-label">Canvas Scale Factor</div>
+    <div className="mm-canvas-scale-control">
+      <div className="mm-canvas-scale-label">Canvas Scale Factor</div>
 
-      <div className="range-control">
+      <div className="mm-range-control">
         <input
           type="range"
-          className="range-slider"
+          className="mm-range-slider"
           min={0.1}
           max={1}
           step={0.05}
           value={canvasScaleFactor}
           onChange={(e) => onCanvasScaleFactorChange(parseFloat(e.target.value))}
         />
-        <span className="range-value">{canvasScaleFactor.toFixed(2)}</span>
+        <span className="mm-range-value">{canvasScaleFactor.toFixed(2)}</span>
       </div>
     </div>
   );

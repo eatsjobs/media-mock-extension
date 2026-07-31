@@ -6,14 +6,14 @@ const MEDIA_MOCK_VERSION = getMediaMockVersion();
 
 export const VersionInfo: React.FC = () => {
   return (
-    <div className="version-info">
-      <div className="version-item">
-        <span className="version-label">🔧 Extension</span>
-        <span className="version-value">v{EXTENSION_VERSION}</span>
+    <div className="mm-version-info">
+      <div className="mm-version-item">
+        <span className="mm-version-label">🔧 Extension</span>
+        <span className="mm-version-value">v{EXTENSION_VERSION}</span>
       </div>
-      <div className="version-item">
-        <span className="version-label">📦 Media Mock</span>
-        <span className="version-value">v{MEDIA_MOCK_VERSION}</span>
+      <div className="mm-version-item">
+        <span className="mm-version-label">📦 Media Mock</span>
+        <span className="mm-version-value">v{MEDIA_MOCK_VERSION}</span>
       </div>
     </div>
   );
