@@ -2,7 +2,7 @@
   "name": "@eatsjobs/media-mock-browser-extension",
   "description": "Chrome/Firefox/Safari/Safari iOS extension for MediaMock library",
   "private": true,
-  "version": "1.2.1",
+  "version": "1.2.2",
   "type": "module",
   "scripts": {
     "build": "wxt build",
